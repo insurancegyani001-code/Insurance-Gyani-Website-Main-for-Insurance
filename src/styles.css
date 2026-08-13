@@ -529,38 +529,170 @@ h1,h2,h3,h4,.brand-word{color:#fff}
   .help-actions{display:grid;width:100%}
   .help-actions .btn{width:100%}
 }
+/* ============================================================
+   Insurance Gyani — premium interactions, glass cards & pages
+   ============================================================ */
 
-.success-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:22px 0 12px}
-.blog-date{display:block;color:var(--muted);font-size:12px;margin:0 0 13px}
-.blog-content .blog-date{margin:0 0 12px}
-.article-cover{display:block;width:100%;max-height:420px;object-fit:cover;border-radius:16px;margin:26px 0 30px;border:1px solid rgba(255,255,255,.15)}
-.article-content h2,.article-content h3{margin:28px 0 10px}
-.article-content p{margin:0 0 18px}
-.article-content a{color:var(--cyan);text-decoration:underline}
-.article-list{color:var(--muted);font-size:17px;line-height:1.8;margin:0 0 21px;padding-left:25px}
-.article-list li{padding-left:5px}
-.article-inline-image{display:block;max-width:100%;height:auto;border-radius:12px;margin:15px 0;border:1px solid rgba(255,255,255,.15)}
-.admin-filters{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 18px}
-.admin-filters input,.admin-filters select{min-height:44px;padding:10px 12px;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(3,13,25,.58);color:#fff}
-.admin-filters input{min-width:280px;flex:1}
-.admin-table-wrap{overflow-x:auto;border:1px solid rgba(255,255,255,.15);border-radius:16px;background:rgba(255,255,255,.06)}
-.admin-table{width:100%;min-width:920px;border-collapse:collapse}
-.admin-table th,.admin-table td{padding:14px 13px;text-align:left;border-bottom:1px solid rgba(255,255,255,.11);font-size:12px;vertical-align:middle}
-.admin-table th{color:var(--gold);font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
-.admin-table tr:last-child td{border-bottom:0}
-.admin-table td{color:rgba(255,255,255,.78)}
-.admin-table select{max-width:142px;padding:8px;border:1px solid rgba(255,255,255,.18);border-radius:7px;background:rgba(3,13,25,.72);color:#fff}
-.admin-phone{color:var(--cyan);white-space:nowrap}
-.admin-table .admin-row-actions{flex-wrap:nowrap}
-.admin-table .btn{padding:8px 10px;font-size:10px;white-space:nowrap}
-.editor-field{display:block}
-.editor-toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:9px;border:1px solid rgba(255,255,255,.18);border-bottom:0;border-radius:8px 8px 0 0;background:rgba(255,255,255,.06)}
-.editor-toolbar button{border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:6px 9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.86);font-size:11px;font-weight:700}
-.editor-toolbar button:hover{border-color:var(--cyan);color:#fff}
-.editor-field textarea{display:block;border-radius:0 0 8px 8px!important}
+/* Global interaction feedback: subtle, professional */
+.btn:active{transform:translateY(0) scale(.975)}
+.btn svg{transition:transform .2s ease}
+.btn:hover svg:last-of-type{transform:translateX(3px)}
+.text-link svg{transition:transform .2s ease}
+.text-link:hover svg{transform:translateX(4px)}
+.finder-option:active,.product-card:active,.reason-card:active,.knowledge-card:active,
+.help-card:active,.blog-card:active,.claims-card:active,.glass-card:active{transform:translateY(-1px) scale(.99)}
+.contact-item{transition:transform .2s ease,color .2s ease}
+.contact-item:hover{transform:translateX(4px)}
+.footer-links a,.footer-contact a{transition:color .2s ease,transform .2s ease;display:inline-block}
+.footer-links a:hover{transform:translateX(3px)}
+.reason-card svg,.knowledge-card svg,.help-card svg,.explain-card .ip-ic,.compare-card .ip-ic,.premium-card .ip-ic{transition:transform .25s ease,box-shadow .25s ease}
+.explain-card:hover .ip-ic,.compare-card:hover .ip-ic,.premium-card:hover .ip-ic{transform:translateY(-2px)}
+
+/* Loading spinner */
+.spin{animation:ig-spin 1s linear infinite}
+@keyframes ig-spin{to{transform:rotate(360deg)}}
+
+/* Form error + success feedback */
+.form-error{grid-column:1/-1;display:flex;align-items:center;gap:9px;padding:12px 14px;border-radius:10px;
+  background:rgba(255,86,86,.12);border:1px solid rgba(255,120,120,.4);color:#ffc4c4;font-size:13px;font-weight:600}
+.form-error svg{flex:none;color:#ff8b8b}
+.lead-form input:focus,.lead-form select:focus,.lead-form textarea:focus,
+.advisor-form input:focus,.advisor-form select:focus,.advisor-form textarea:focus{
+  border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.18);outline:none}
+
+/* Social links */
+.social-links{display:flex;gap:10px;flex-wrap:wrap}
+.social-links a{width:40px;height:40px;display:grid;place-items:center;border-radius:11px;color:#fff;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);
+  transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease}
+.social-links a:hover{transform:translateY(-3px);background:rgba(34,211,238,.16);border-color:rgba(34,211,238,.6);
+  box-shadow:0 10px 24px rgba(34,211,238,.18);color:#fff}
+.social-links a:active{transform:translateY(-1px) scale(.96)}
+.footer-social{margin-top:20px}
+.contact-social{margin-top:26px}
+.contact-social .social-label,.about-social{display:block}
+.social-label{display:block;font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.about-social{margin-top:20px}
+.help-social{margin-top:16px}
+
+/* Reusable glass card */
+.glass-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:18px;
+  backdrop-filter:blur(16px);box-shadow:0 18px 45px rgba(0,0,0,.22);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease}
+.glass-card:hover{transform:translateY(-4px);border-color:rgba(34,211,238,.5);background:rgba(255,255,255,.1);
+  box-shadow:0 24px 55px rgba(0,0,0,.3),0 0 30px rgba(34,211,238,.1)}
+.ip-ic{width:50px;height:50px;display:grid;place-items:center;border-radius:14px;color:#fff;flex:none;
+  background:linear-gradient(145deg,rgba(59,130,246,.32),rgba(34,211,238,.12));
+  border:1px solid rgba(34,211,238,.35);box-shadow:inset 0 0 20px rgba(34,211,238,.12)}
+
+/* Insurance page hero */
+.ip-hero{padding:86px 0 78px;overflow:hidden;
+  background:radial-gradient(circle at 82% 12%,rgba(34,211,238,.14),transparent 26rem),
+    radial-gradient(circle at 15% 90%,rgba(139,92,246,.12),transparent 22rem),
+    linear-gradient(135deg,#061525,#0B1F3A 60%,#123B66)}
+.ip-hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+.ip-hero h1{margin:20px 0 18px}
+.ip-hero-copy{font-size:19px;color:rgba(255,255,255,.78);max-width:600px;margin-bottom:22px}
+.ip-hero-points{list-style:none;padding:0;margin:0 0 30px;display:grid;gap:12px}
+.ip-hero-points li{display:flex;align-items:center;gap:11px;font-size:15px;font-weight:600;color:rgba(255,255,255,.9)}
+.ip-hero-points svg{color:var(--cyan);flex:none}
+.ip-hero-card{padding:34px}
+.ip-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);padding:6px 12px;border:1px solid rgba(244,201,93,.4);border-radius:30px;background:rgba(244,201,93,.1);margin-bottom:18px}
+.ip-badge.dark{color:var(--cyan);border-color:rgba(34,211,238,.4);background:rgba(34,211,238,.1)}
+.ip-hero-card h3{font-size:24px;margin:0 0 10px}
+.ip-hero-card p{color:var(--muted);font-size:15px;margin:0 0 22px}
+.ip-hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ip-hero-stats div{padding:14px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);text-align:center}
+.ip-hero-stats b{display:block;font-family:var(--display);font-size:17px;color:#fff}
+.ip-hero-stats span{font-size:11px;color:var(--muted)}
+
+/* Explain grid */
+.explain-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:38px}
+.explain-card{padding:28px}
+.explain-card h3{font-size:18px;margin:18px 0 9px}
+.explain-card p{font-size:14px;color:var(--muted);margin:0;line-height:1.65}
+
+/* Compare grid */
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
+.compare-card{display:flex;gap:16px;align-items:flex-start;padding:24px}
+.compare-card h3{font-size:17px;margin:0 0 6px}
+.compare-card p{font-size:14px;color:var(--muted);margin:0;line-height:1.6}
+.compare-cta{display:flex;justify-content:center;margin-top:36px}
+
+/* "Look past the premium" grid */
+.premium-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.premium-intro{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column;justify-content:center;padding:40px}
+.glass-dark{background:linear-gradient(150deg,rgba(11,31,58,.95),rgba(6,21,37,.98));
+  border:1px solid rgba(255,255,255,.14);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.34)}
+.premium-intro h2{font-size:clamp(30px,3.4vw,42px);margin:16px 0 14px}
+.premium-intro p{color:var(--muted);font-size:16px;max-width:440px;margin:0 0 26px}
+.premium-card{padding:26px}
+.premium-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.premium-num{font-family:var(--display);font-weight:800;font-size:26px;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.premium-card h3{font-size:17px;margin:0 0 8px}
+.premium-card p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.6}
+
+/* Responsive for insurance pages */
+@media(max-width:980px){
+  .ip-hero-grid{grid-template-columns:1fr;gap:40px}
+  .explain-grid{grid-template-columns:1fr 1fr}
+  .compare-grid{grid-template-columns:1fr 1fr}
+  .premium-grid{grid-template-columns:1fr 1fr}
+  .premium-intro{grid-column:1/-1;grid-row:auto}
+}
 @media(max-width:600px){
-  .success-actions{display:grid}
-  .success-actions .btn{width:100%}
-  .admin-filters{display:grid}
-  .admin-filters input{min-width:0}
+  .ip-hero{padding:60px 0 58px}
+  .ip-hero-copy{font-size:16px}
+  .ip-hero-stats{grid-template-columns:repeat(3,1fr)}
+  .explain-grid,.compare-grid,.premium-grid{grid-template-columns:1fr}
+  .compare-card{gap:14px}
+  .premium-intro{padding:30px 24px}
+  .social-links a{width:44px;height:44px}
+  .footer-social,.contact-social{margin-top:20px}
+}
+
+/* Trust section */
+.trust-band{background:linear-gradient(135deg,#061525,#0B1F3A 60%,#0e2c50)}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:38px}
+.trust-card{padding:28px}
+.trust-card h3{font-size:17px;margin:16px 0 8px}
+.trust-card p{font-size:14px;color:var(--muted);margin:0;line-height:1.6}
+@media(max-width:980px){.trust-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.trust-grid{grid-template-columns:1fr}}
+
+/* Why Insurance Gyani (numbered) */
+.why-ig-band{background:linear-gradient(135deg,#061525,#0B1F3A 60%,#0e2c50)}
+.whyig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:38px}
+.whyig-card{padding:28px}
+.whyig-card .premium-num{font-family:var(--display);font-weight:800;font-size:28px;display:block;margin-bottom:12px;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.whyig-card h3{font-size:18px;margin:0 0 8px}
+.whyig-card p{font-size:14px;color:var(--muted);margin:0;line-height:1.65}
+
+/* Customer journey */
+.journey-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
+.journey-step{padding:28px;position:relative}
+.journey-step .premium-num{position:absolute;top:18px;right:22px;font-family:var(--display);font-weight:800;font-size:22px;color:rgba(255,255,255,.14)}
+.journey-step h3{font-size:18px;margin:16px 0 8px}
+.journey-step p{font-size:14px;color:var(--muted);margin:0;line-height:1.6}
+.journey-cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:34px}
+
+/* 404 page */
+.notfound{min-height:66vh;display:grid;place-items:center;padding:80px 0;
+  background:radial-gradient(circle at 80% 15%,rgba(34,211,238,.14),transparent 24rem),
+    radial-gradient(circle at 15% 85%,rgba(139,92,246,.12),transparent 22rem),linear-gradient(135deg,#061525,#0B1F3A 60%,#123B66)}
+.nf-inner{text-align:center;max-width:560px}
+.nf-inner h1{margin:18px 0 14px;font-size:clamp(30px,5vw,52px)}
+.nf-inner p{color:rgba(255,255,255,.78);font-size:17px;margin:0 auto 28px;max-width:460px}
+.nf-inner .btn{margin:0 auto}
+
+/* Global mobile safety */
+html,body,#root{max-width:100%;overflow-x:hidden}
+img{max-width:100%;height:auto}
+@media(max-width:980px){.whyig-grid{grid-template-columns:1fr 1fr}.journey-grid{grid-template-columns:1fr}}
+@media(max-width:600px){
+  .whyig-grid{grid-template-columns:1fr}
+  .journey-cta .btn{width:100%;justify-content:center}
+  .nf-inner p{font-size:15px}
 }

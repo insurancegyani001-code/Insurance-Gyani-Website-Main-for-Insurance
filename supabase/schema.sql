@@ -16,24 +16,10 @@ drop policy if exists "public can insert insurance leads" on public.leads;
 drop policy if exists "public can insert advisor leads" on public.advisor_leads;
 drop policy if exists "public can read published blogs" on public.blogs;
 drop policy if exists "admins can manage blogs" on public.blogs;
-drop policy if exists "admins can read insurance leads" on public.leads;
-drop policy if exists "admins can update insurance leads" on public.leads;
-drop policy if exists "admins can read advisor leads" on public.advisor_leads;
-drop policy if exists "admins can update advisor leads" on public.advisor_leads;
 create policy "public can insert insurance leads" on public.leads for insert to anon,authenticated with check (true);
 create policy "public can insert advisor leads" on public.advisor_leads for insert to anon,authenticated with check (true);
 create policy "public can read published blogs" on public.blogs for select to anon,authenticated using (published=true);
 create policy "admins can manage blogs" on public.blogs for all to authenticated
-  using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
-  with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
-create policy "admins can read insurance leads" on public.leads for select to authenticated
-  using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
-create policy "admins can update insurance leads" on public.leads for update to authenticated
-  using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
-  with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
-create policy "admins can read advisor leads" on public.advisor_leads for select to authenticated
-  using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
-create policy "admins can update advisor leads" on public.advisor_leads for update to authenticated
   using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
   with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 -- Do not create public SELECT policies for leads or advisor_leads. View them through a protected admin/server API.

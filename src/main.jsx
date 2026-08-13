@@ -1,11 +1,34 @@
-import React,{useEffect,useRef,useState}from'react';
+import React,{useEffect,useState}from'react';
 import{createRoot}from'react-dom/client';
 import{BrowserRouter,Routes,Route,Link,useLocation,useParams}from'react-router-dom';
-import{ShieldCheck,HeartPulse,CarFront,Users,UsersRound,Bike,ArrowRight,Phone,MessageCircle,CheckCircle2,Menu,X,BookOpen,Mail,ChevronDown,LockKeyhole,UserRoundPlus,TrendingUp,Clock3,Headphones,Stethoscope,Plane,LifeBuoy,FileCheck,Hospital,ClipboardCheck,CircleHelp}from'lucide-react';
+import{ShieldCheck,HeartPulse,CarFront,Users,UsersRound,Bike,ArrowRight,Phone,MessageCircle,CheckCircle2,Menu,X,BookOpen,Mail,ChevronDown,LockKeyhole,UserRoundPlus,TrendingUp,Clock3,Headphones,Stethoscope,Plane,LifeBuoy,FileCheck,Hospital,ClipboardCheck,CircleHelp,IndianRupee,BedDouble,Baby,Award,Building2,Repeat,SlidersHorizontal,Gauge,PlusCircle,Percent,Wrench,CalendarClock,UserCheck,CircleAlert,Scale,ShieldPlus,Wallet,Loader2}from'lucide-react';
 import{supabase}from'./supabase';
 import'./styles.css';
 
-const phone='9891510642',wa='919891510642',email='hello@insurancegyani.in';
+const phone='9891510642',wa='919891510642',email='info@insurancegyani.in';
+const YOUTUBE_URL=import.meta.env.VITE_YOUTUBE_URL||'https://youtube.com/@insurancegyani?si=R4Vbv_k_DFikjhw2';
+const INSTAGRAM_URL=import.meta.env.VITE_INSTAGRAM_URL||'https://www.instagram.com/insurancegyani001?igsh=cTZlYml2MTl2cnly';
+const LINKEDIN_URL=import.meta.env.VITE_LINKEDIN_URL||'https://www.linkedin.com/company/insurance-gyani/';
+const socials=[['YouTube','youtube',YOUTUBE_URL],['Instagram','instagram',INSTAGRAM_URL],['LinkedIn','linkedin',LINKEDIN_URL]];
+const SocialIcon={
+  youtube:<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>,
+  instagram:<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>,
+  linkedin:<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.66H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0Z"/></svg>
+};
+function SocialLinks({variant=''}){return <div className={'social-links '+variant}>{socials.map(([label,key,url])=><a key={label} href={url} target="_blank" rel="noreferrer" aria-label={label} title={label} data-testid={'social-'+key}>{SocialIcon[key]}</a>)}</div>}
+function waLink(type){const msg='Hi Insurance Gyani, I am interested in '+type+'. Please help me compare suitable options.';return 'https://wa.me/'+wa+'?text='+encodeURIComponent(msg)}
+const SITE_URL=(import.meta.env.VITE_SITE_URL||'https://www.insurancegyani.in').replace(/\/+$/,'');
+function setMetaTag(attr,key,content){let el=document.head.querySelector('meta['+attr+'="'+key+'"]');if(!el){el=document.createElement('meta');el.setAttribute(attr,key);document.head.appendChild(el)}el.setAttribute('content',content)}
+function setCanonical(href){let el=document.head.querySelector('link[rel="canonical"]');if(!el){el=document.createElement('link');el.setAttribute('rel','canonical');document.head.appendChild(el)}el.setAttribute('href',href)}
+function useSeo({title,description,path=''}){
+  useEffect(()=>{
+    const url=SITE_URL+(path||'');
+    if(title){document.title=title;setMetaTag('property','og:title',title);setMetaTag('name','twitter:title',title)}
+    if(description){setMetaTag('name','description',description);setMetaTag('property','og:description',description);setMetaTag('name','twitter:description',description)}
+    setMetaTag('property','og:url',url);setCanonical(url);
+    window.scrollTo(0,0);
+  },[title,description,path]);
+}
 const insuranceNav=[['Health Insurance','/health-insurance'],['Life Insurance','/life-insurance'],['Motor Insurance','/motor-insurance'],['Other Insurance','/other-insurance']];
 const products=[
   {title:'Health Insurance',path:'/health-insurance',icon:HeartPulse,description:'Protect yourself and your family against unexpected medical expenses.',features:['Hospitalisation','Family Floater','Senior Citizen','Critical Illness']},
@@ -33,130 +56,78 @@ function Header({quote}){
 }
 
 function Lead({close,initialType='Health Insurance',source='homepage',blogSlug='',submitLabel='GET PERSONALISED GUIDANCE'}){
-  const[sent,setSent]=useState(false),[busy,setBusy]=useState(false);
+  const[sent,setSent]=useState(false),[busy,setBusy]=useState(false),[err,setErr]=useState('');
   const[f,setF]=useState({name:'',mobile:'',city:'',insurance_type:initialType,consent:false});
   const set=(key,value)=>setF(current=>({...current,[key]:value}));
   async function submit(event){
     event.preventDefault();
-    if(!f.consent){window.alert('Please accept the consent.');return}
+    if(busy)return;
+    setErr('');
+    if(!f.name.trim()){setErr('Please enter your full name.');return}
+    if(!/^[6-9]\d{9}$/.test(f.mobile)){setErr('Please enter a valid 10-digit mobile number.');return}
+    if(!f.city.trim()){setErr('Please enter your city.');return}
+    if(!f.consent){setErr('Please accept the consent to continue.');return}
     setBusy(true);
     try{
-      if(!supabase)throw Error('Database not configured');
-       const{error}=await supabase.from('leads').insert([{...f,source,blog_slug:blogSlug||null}]);
+      if(!supabase){await new Promise(r=>setTimeout(r,450));throw Error('Our system is not able to save your request right now. Please call us at '+phone+'.')}
+       const{consent,...payload}=f;
+       const{error}=await supabase.from('leads').insert([{...payload,source,blog_slug:blogSlug||null}]);
       if(error)throw error;
       setSent(true);
-     }catch(error){if(import.meta.env.DEV)console.error('Insurance lead submission failed:',error);window.alert("We couldn't submit your request right now. Please try again or call 9891510642.")}
+    }catch(error){console.error(error);setErr(error.message||'Unable to submit right now. Please call us directly at '+phone+'.')}
     finally{setBusy(false)}
   }
-  return <div className="backdrop" role="dialog" aria-modal="true"><div className="modal">
-    <button className="modal-close" aria-label="Close form" onClick={close}><X size={18}/></button>
-     {sent?<div className="success"><CheckCircle2 size={54}/><h2>Request Received</h2><p>Thank you for sharing your requirement.</p><p>Our Insurance Gyani team will get in touch with you shortly.</p><div className="success-actions"><a className="btn primary" href={'tel:'+phone}><Phone size={16}/> CALL NOW</a><a className="btn secondary" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WHATSAPP</a></div><button className="btn secondary" onClick={close}>Close</button></div>:<>
+  return <div className="backdrop" role="dialog" aria-modal="true" onClick={close}><div className="modal" onClick={e=>e.stopPropagation()}>
+    <button className="modal-close" aria-label="Close form" onClick={close} data-testid="lead-close"><X size={18}/></button>
+    {sent?<div className="success" data-testid="lead-success"><CheckCircle2 size={54}/><h2>Request received</h2><p>Thank you! Your request has been received. Our Insurance Gyani team will contact you shortly.</p><button className="btn primary" onClick={close} data-testid="lead-done">Done</button></div>:<>
       <small>FREE INSURANCE ASSISTANCE</small><h2>Tell us what you need</h2><p className="modal-intro">Share a few details and we will get in touch with clear, relevant guidance.</p>
-      <form className="lead-form" onSubmit={submit}>
-        <input required placeholder="Full name" value={f.name} onChange={e=>set('name',e.target.value)}/>
-        <input required pattern="[0-9]{10}" placeholder="10-digit mobile" value={f.mobile} onChange={e=>set('mobile',e.target.value.replace(/\D/g,'').slice(0,10))}/>
-        <select value={f.insurance_type} onChange={e=>set('insurance_type',e.target.value)}>{['Health Insurance','Life Insurance','Motor Insurance','Travel Insurance','Personal Accident','Other'].map(x=><option key={x}>{x}</option>)}</select>
-        <input required placeholder="City" value={f.city} onChange={e=>set('city',e.target.value)}/>
-        <label className="check-label"><input type="checkbox" checked={f.consent} onChange={e=>set('consent',e.target.checked)}/> <span>I agree to be contacted regarding my insurance requirement.</span></label>
-        <button disabled={busy} className="btn primary full wide">{busy?'Submitting...':submitLabel} <ArrowRight size={16}/></button>
+      <form className="lead-form" onSubmit={submit} noValidate>
+        <input required placeholder="Full name" value={f.name} onChange={e=>set('name',e.target.value)} data-testid="lead-name"/>
+        <input required inputMode="numeric" pattern="[6-9][0-9]{9}" placeholder="10-digit mobile" value={f.mobile} onChange={e=>set('mobile',e.target.value.replace(/\D/g,'').slice(0,10))} data-testid="lead-mobile"/>
+        <select value={f.insurance_type} onChange={e=>set('insurance_type',e.target.value)} data-testid="lead-type">{['Health Insurance','Life Insurance','Motor Insurance','Travel Insurance','Personal Accident','Other'].map(x=><option key={x}>{x}</option>)}</select>
+        <input required placeholder="City" value={f.city} onChange={e=>set('city',e.target.value)} data-testid="lead-city"/>
+        <label className="check-label"><input type="checkbox" checked={f.consent} onChange={e=>set('consent',e.target.checked)} data-testid="lead-consent"/> <span>I agree to be contacted regarding my insurance requirement.</span></label>
+        {err&&<div className="form-error" data-testid="lead-error"><CircleAlert size={16}/> {err}</div>}
+        <button disabled={busy} className="btn primary full wide" data-testid="lead-submit">{busy?<><Loader2 size={16} className="spin"/> Submitting...</>:<>{submitLabel} <ArrowRight size={16}/></>}</button>
       </form>
     </>}</div></div>;
 }
 
-function formatDate(value){
-  if(!value)return '—';
-  const date=new Date(value);
-  return Number.isNaN(date.getTime())?'—':date.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-}
-
-function leadWhatsApp(mobile){
-  const digits=String(mobile||'').replace(/\D/g,'');
-  return 'https://wa.me/'+(digits.length===10?'91'+digits:digits);
-}
-
-function useAdminSession(){
-  const[session,setSession]=useState(undefined);
-  useEffect(()=>{
-    if(!supabase){setSession(null);return}
-    let active=true;
-    supabase.auth.getSession().then(({data})=>{if(active)setSession(data.session)});
-    const{data:{subscription}}=supabase.auth.onAuthStateChange((_event,next)=>setSession(next));
-    return()=>{active=false;subscription.unsubscribe()}
-  },[]);
-  return session;
-}
-
-const leadStatuses=['New','Contacted','Follow-up','Interested','Converted','Not Interested'];
-const advisorStatuses=['New','Contacted','Follow-up','Interested','Joined','Not Interested'];
-const leadTypes=[['Health','Health Insurance'],['Life','Life Insurance'],['Motor','Motor Insurance'],['Personal Accident','Personal Accident'],['Travel','Travel Insurance'],['Other','Other']];
-
-function AdminLocked({title,description}){
-  return <section className="section"><div className="container narrow admin-locked"><span className="eyebrow">Protected workspace</span><h1>{title}</h1><p className="lead">{description}</p><div className="guidance-note"><LockKeyhole size={19}/><span>Admin data is available only to an authenticated Supabase administrator.</span></div><p className="muted">Setup note: enable Supabase Auth and mark approved users with <code>app_metadata.role = 'admin'</code>. The schema includes protected policies for this dashboard.</p></div></section>
-}
-
-function AdminLeads(){
-  const session=useAdminSession(),[leads,setLeads]=useState([]),[statusFilter,setStatusFilter]=useState('All'),[typeFilter,setTypeFilter]=useState('All'),[search,setSearch]=useState(''),[message,setMessage]=useState('');
-  useEffect(()=>{if(session)loadLeads()},[session]);
-  async function loadLeads(){
-    const{data,error}=await supabase.from('leads').select('id,name,mobile,insurance_type,city,source,created_at,status').order('created_at',{ascending:false});
-    if(error)setMessage(error.message);else setLeads(data||[]);
-  }
-  async function updateStatus(id,status){
-    const{error}=await supabase.from('leads').update({status}).eq('id',id);
-    if(error)setMessage(error.message);else setLeads(current=>current.map(lead=>lead.id===id?{...lead,status}:lead));
-  }
-  if(session===undefined)return <section className="section"><div className="container narrow"><div className="empty-state">Checking admin access...</div></div></section>;
-  if(!session)return <AdminLocked title="Lead Management" description="This dashboard is ready for authenticated administrators. Sign in through your existing Supabase Auth setup, then return here to review and update insurance enquiries."/>;
-  const query=search.trim().toLowerCase();
-  const filtered=leads.filter(lead=>(statusFilter==='All'||(lead.status||'New')===statusFilter)&&(typeFilter==='All'||lead.insurance_type===typeFilter)&&(!query||String(lead.name||'').toLowerCase().includes(query)||String(lead.mobile||'').includes(query)));
-  return <section className="section"><div className="container admin-page"><div className="section-heading"><div><span className="eyebrow">Protected workspace</span><h1>Lead Management</h1></div><span className="admin-user">{session.user.email}</span></div>{message&&<div className="admin-message">{message}</div>}<div className="admin-filters"><input aria-label="Search leads" placeholder="Search by name or mobile" value={search} onChange={e=>setSearch(e.target.value)}/><select aria-label="Filter by status" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option>All</option>{leadStatuses.map(status=><option key={status}>{status}</option>)}</select><select aria-label="Filter by insurance type" value={typeFilter} onChange={e=>setTypeFilter(e.target.value)}><option>All</option>{leadTypes.map(([label,value])=><option key={value} value={value}>{label}</option>)}</select></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Name</th><th>Mobile</th><th>Insurance Type</th><th>City</th><th>Source</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>{filtered.length?filtered.map(lead=><tr key={lead.id}><td>{lead.name}</td><td><a className="admin-phone" href={'tel:'+lead.mobile}>{lead.mobile}</a></td><td>{lead.insurance_type}</td><td>{lead.city||'—'}</td><td>{lead.source||'homepage'}</td><td>{formatDate(lead.created_at)}</td><td><select value={lead.status||'New'} onChange={e=>updateStatus(lead.id,e.target.value)}>{leadStatuses.map(status=><option key={status}>{status}</option>)}</select></td><td><div className="admin-row-actions"><a className="btn secondary" href={'tel:'+lead.mobile}>CALL</a><a className="btn secondary" href={leadWhatsApp(lead.mobile)} target="_blank" rel="noreferrer">WHATSAPP</a></div></td></tr>):<tr><td colSpan="8"><div className="empty-state">No leads match these filters.</div></td></tr>}</tbody></table></div></div></section>
-}
-
-function AdminAdvisorLeads(){
-  const session=useAdminSession(),[leads,setLeads]=useState([]),[statusFilter,setStatusFilter]=useState('All'),[message,setMessage]=useState('');
-  useEffect(()=>{if(session)loadLeads()},[session]);
-  async function loadLeads(){
-    const{data,error}=await supabase.from('advisor_leads').select('id,name,mobile,email,city,experience,status,created_at').order('created_at',{ascending:false});
-    if(error)setMessage(error.message);else setLeads(data||[]);
-  }
-  async function updateStatus(id,status){
-    const{error}=await supabase.from('advisor_leads').update({status}).eq('id',id);
-    if(error)setMessage(error.message);else setLeads(current=>current.map(lead=>lead.id===id?{...lead,status}:lead));
-  }
-  if(session===undefined)return <section className="section"><div className="container narrow"><div className="empty-state">Checking admin access...</div></div></section>;
-  if(!session)return <AdminLocked title="Advisor Lead Management" description="This dashboard is ready for authenticated administrators. Sign in through your existing Supabase Auth setup, then return here to review advisor enquiries."/>;
-  const filtered=leads.filter(lead=>statusFilter==='All'||(lead.status||'New')===statusFilter);
-  return <section className="section"><div className="container admin-page"><div className="section-heading"><div><span className="eyebrow">Protected workspace</span><h1>Advisor Leads</h1></div><span className="admin-user">{session.user.email}</span></div>{message&&<div className="admin-message">{message}</div>}<div className="admin-filters"><select aria-label="Filter advisor leads by status" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option>All</option>{advisorStatuses.map(status=><option key={status}>{status}</option>)}</select></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Name</th><th>Mobile</th><th>Email</th><th>City</th><th>Experience</th><th>Status</th><th>Date</th></tr></thead><tbody>{filtered.length?filtered.map(lead=><tr key={lead.id}><td>{lead.name}</td><td><a className="admin-phone" href={'tel:'+lead.mobile}>{lead.mobile}</a></td><td>{lead.email||'—'}</td><td>{lead.city||'—'}</td><td>{lead.experience||'—'}</td><td><select value={lead.status||'New'} onChange={e=>updateStatus(lead.id,e.target.value)}>{advisorStatuses.map(status=><option key={status}>{status}</option>)}</select></td><td>{formatDate(lead.created_at)}</td></tr>):<tr><td colSpan="7"><div className="empty-state">No advisor leads match this filter.</div></td></tr>}</tbody></table></div></div></section>
-}
-
 function AdvisorLead(){
-  const[sent,setSent]=useState(false),[busy,setBusy]=useState(false);
+  const[sent,setSent]=useState(false),[busy,setBusy]=useState(false),[err,setErr]=useState('');
   const[f,setF]=useState({name:'',mobile:'',email:'',city:'',experience:'',employment:'',message:'',consent:false});
   const set=(key,value)=>setF(current=>({...current,[key]:value}));
   async function submit(event){
     event.preventDefault();
-    if(!f.consent){window.alert('Please accept the consent.');return}
+    if(busy)return;
+    setErr('');
+    if(!f.name.trim()){setErr('Please enter your full name.');return}
+    if(!/^[6-9]\d{9}$/.test(f.mobile)){setErr('Please enter a valid 10-digit mobile number.');return}
+    if(!f.city.trim()){setErr('Please enter your city.');return}
+    if(!f.consent){setErr('Please accept the consent to continue.');return}
     setBusy(true);
     try{
-      if(!supabase)throw Error('Database not configured');
-      const{error}=await supabase.from('advisor_leads').insert([f]);
+      if(!supabase){await new Promise(r=>setTimeout(r,450));throw Error('Our system is not able to save your details right now. Please call us at '+phone+'.')}
+      const{consent,...payload}=f;
+      const{error}=await supabase.from('advisor_leads').insert([payload]);
       if(error)throw error;
       setSent(true);
-    }catch(error){console.error(error);window.alert('Unable to submit right now. Please call us at 9891510642.')}
+    }catch(error){console.error(error);setErr(error.message||'Unable to submit right now. Please call us at '+phone+'.')}
     finally{setBusy(false)}
   }
   return <div className="advisor-form">{sent?<div className="success"><CheckCircle2 size={50}/><h3>Thank you for your interest.</h3><p>We have received your details. Our team will get in touch with you.</p></div>:<>
     <div className="form-head"><span className="eyebrow">Start your insurance career</span><h2>Become an Insurance Advisor</h2><p>Leave your details and our team will contact you about the opportunity.</p></div>
-    <form className="form-grid" onSubmit={submit}>
+    <form className="form-grid" onSubmit={submit} noValidate>
       <input required placeholder="Full name" value={f.name} onChange={e=>set('name',e.target.value)}/>
-      <input required pattern="[0-9]{10}" placeholder="10-digit mobile" value={f.mobile} onChange={e=>set('mobile',e.target.value.replace(/\D/g,'').slice(0,10))}/>
+      <input required inputMode="numeric" pattern="[6-9][0-9]{9}" placeholder="10-digit mobile" value={f.mobile} onChange={e=>set('mobile',e.target.value.replace(/\D/g,'').slice(0,10))}/>
       <input type="email" placeholder="Email" value={f.email} onChange={e=>set('email',e.target.value)}/>
       <input required placeholder="City" value={f.city} onChange={e=>set('city',e.target.value)}/>
       <select value={f.experience} onChange={e=>set('experience',e.target.value)}><option value="">Insurance experience</option><option>New to insurance</option><option>Already an advisor</option><option>Sales / financial services experience</option></select>
       <select value={f.employment} onChange={e=>set('employment',e.target.value)}><option value="">Current work status</option><option>Full-time job</option><option>Part-time / business</option><option>Self-employed</option><option>Looking for an opportunity</option></select>
       <textarea className="wide" placeholder="Tell us a little about yourself" value={f.message} onChange={e=>set('message',e.target.value)}/>
       <label className="check-label"><input type="checkbox" checked={f.consent} onChange={e=>set('consent',e.target.checked)}/><span>I agree to be contacted about the insurance advisor opportunity.</span></label>
-      <button disabled={busy} className="btn primary full wide">{busy?'Submitting...':'Register Your Interest'} <ArrowRight size={16}/></button>
+      {err&&<div className="form-error wide" data-testid="advisor-error"><CircleAlert size={16}/> {err}</div>}
+      <button disabled={busy} className="btn primary full wide" data-testid="advisor-submit">{busy?<><Loader2 size={16} className="spin"/> Submitting...</>:<>Register Your Interest <ArrowRight size={16}/></>}</button>
     </form>
   </>}</div>
 }
@@ -227,90 +198,256 @@ function ClaimsSupport({quote}){
 }
 
 function HelpCTA({quote}){
-  return <section className="cta help-cta"><div className="container cta-panel"><div><span className="eyebrow">Talk to our team</span><h2>Have an Insurance Question?</h2><p>Whether you're exploring a new policy, reviewing existing coverage or trying to understand a claim process, you can share your requirement with us.</p><a className="help-email" href={'mailto:'+email}>{email}</a></div><div className="help-actions"><a className="btn white" href={'tel:'+phone}><Phone size={16}/> CALL {phone}</a><a className="btn secondary" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WHATSAPP</a><button className="btn primary" onClick={()=>quote('Health Insurance','homepage')}>GET GUIDANCE <ArrowRight size={16}/></button></div></div></section>
-}
-
-function escapeHtml(value){
-  return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-}
-
-function inlineMarkdown(value){
-  let html=escapeHtml(value);
-  html=html.replace(/!\[([^\]]*)\]\((https?:\/\/[^)\s]+)\)/gi,'<img class="article-inline-image" src="$2" alt="$1" />');
-  html=html.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/gi,'<a href="$2" target="_blank" rel="noreferrer">$1</a>');
-  html=html.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/__([^_]+)__/g,'<strong>$1</strong>');
-  html=html.replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/_([^_]+)_/g,'<em>$1</em>');
-  return html;
-}
-
-function renderBlogContent(content){
-  const elements=[],lines=String(content||'').split(/\r?\n/);
-  let listType=null,items=[];
-  const flushList=()=>{
-    if(!listType||!items.length)return;
-    const Tag=listType==='ol'?'ol':'ul';
-    elements.push(<Tag className="article-list" key={'list-'+elements.length}>{items.map((item,index)=><li key={index} dangerouslySetInnerHTML={{__html:inlineMarkdown(item)}}/>)}</Tag>);
-    listType=null;items=[]
-  };
-  lines.forEach((line,index)=>{
-    const trimmed=line.trim();
-    if(/^[-*]\s+/.test(trimmed)){if(listType!=='ul'){flushList();listType='ul'}items.push(trimmed.replace(/^[-*]\s+/,''));return}
-    if(/^\d+\.\s+/.test(trimmed)){if(listType!=='ol'){flushList();listType='ol'}items.push(trimmed.replace(/^\d+\.\s+/,''));return}
-    flushList();
-    if(!trimmed)return;
-    if(/^###\s+/.test(trimmed))elements.push(<h3 key={index} dangerouslySetInnerHTML={{__html:inlineMarkdown(trimmed.replace(/^###\s+/,''))}}/>);
-    else if(/^##\s+/.test(trimmed))elements.push(<h2 key={index} dangerouslySetInnerHTML={{__html:inlineMarkdown(trimmed.replace(/^##\s+/,''))}}/>);
-    else if(/^#\s+/.test(trimmed))elements.push(<h2 key={index} dangerouslySetInnerHTML={{__html:inlineMarkdown(trimmed.replace(/^#\s+/,''))}}/>);
-    else elements.push(<p key={index} dangerouslySetInnerHTML={{__html:inlineMarkdown(trimmed)}}/>)
-  });
-  flushList();
-  return elements;
+  return <section className="cta help-cta"><div className="container cta-panel"><div><span className="eyebrow">Talk to our team</span><h2>Have an Insurance Question?</h2><p>Whether you're exploring a new policy, reviewing existing coverage or trying to understand a claim process, you can share your requirement with us.</p><a className="help-email" href={'mailto:'+email}>{email}</a><SocialLinks variant="help-social"/></div><div className="help-actions"><a className="btn white" href={'tel:'+phone}><Phone size={16}/> CALL {phone}</a><a className="btn secondary" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WHATSAPP</a><button className="btn primary" onClick={()=>quote('Health Insurance','homepage')}>GET GUIDANCE <ArrowRight size={16}/></button></div></div></section>
 }
 
 function AdminBlogs(){
   const blank={title:'',slug:'',category:'Health Insurance',excerpt:'',cover_image:'',content:'',seo_title:'',meta_description:'',keywords:'',published:false,published_at:''};
-  const session=useAdminSession(),[posts,setPosts]=useState([]),[form,setForm]=useState(blank),[editing,setEditing]=useState(null),[busy,setBusy]=useState(false),[message,setMessage]=useState('');
-  const contentRef=useRef(null),categories=['Health Insurance','Life Insurance','Motor Insurance','Claims','Insurance Tips','Insurance FAQs'];
-  useEffect(()=>{if(session)load()},[session]);
+  const[session,setSession]=useState(undefined),[posts,setPosts]=useState([]),[form,setForm]=useState(blank),[editing,setEditing]=useState(null),[busy,setBusy]=useState(false),[message,setMessage]=useState('');
+  const categories=['Health Insurance','Life Insurance','Motor Insurance','Claims','Insurance Tips','Insurance FAQs'];
+  useEffect(()=>{
+    if(!supabase){setSession(null);return}
+    let active=true;
+    supabase.auth.getSession().then(({data})=>{if(active){setSession(data.session);if(data.session)load(data.session)}})
+    const{data:{subscription}}=supabase.auth.onAuthStateChange((_event,next)=>{setSession(next);if(next)load(next);else setPosts([])});
+    return()=>{active=false;subscription.unsubscribe()}
+  },[]);
   async function load(){if(!supabase)return;const{data,error}=await supabase.from('blogs').select('*').order('created_at',{ascending:false});if(error)setMessage(error.message);else setPosts(data||[])}
   const set=(key,value)=>setForm(current=>({...current,[key]:value}));
   function edit(post){setEditing(post.id);setForm({...blank,...post,published_at:post.published_at?String(post.published_at).slice(0,10):''});window.scrollTo({top:0,behavior:'smooth'})}
   function reset(){setEditing(null);setForm(blank)}
-  function insertMarkdown(before,after='',placeholder='text'){
-    const element=contentRef.current;
-    if(!element)return;
-    const start=element.selectionStart,end=element.selectionEnd,selected=form.content.slice(start,end)||placeholder;
-    const next=form.content.slice(0,start)+before+selected+after+form.content.slice(end);
-    set('content',next);
-    requestAnimationFrame(()=>{element.focus();const cursor=start+before.length+selected.length+after.length;element.setSelectionRange(cursor,cursor)})
-  }
-  async function save(event,publishOverride=form.published){
+  async function save(event){
     event.preventDefault();setBusy(true);setMessage('');
-    const slug=form.slug||form.title.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-    const published=publishOverride;
-    const payload={title:form.title,slug,category:form.category,excerpt:form.excerpt,cover_image:form.cover_image,content:form.content,seo_title:form.seo_title,meta_description:form.meta_description,keywords:form.keywords,published,published_at:published?(form.published_at||new Date().toISOString()):null,updated_at:new Date().toISOString()};
+    const payload={...form,slug:form.slug||form.title.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''),published_at:form.published?(form.published_at||new Date().toISOString()):null};
     const result=editing?await supabase.from('blogs').update(payload).eq('id',editing):await supabase.from('blogs').insert([payload]);
-    if(result.error)setMessage(result.error.message);else{setMessage(editing?(published?'Blog published.':'Draft saved.'):'Blog created.');reset();await load()}
+    if(result.error)setMessage(result.error.message);else{setMessage(editing?'Blog updated.':'Blog created.');reset();await load()}
     setBusy(false)
-  }
-  async function togglePublished(post){
-    const published=!post.published,{error}=await supabase.from('blogs').update({published,published_at:published?(post.published_at||new Date().toISOString()):null,updated_at:new Date().toISOString()}).eq('id',post.id);
-    if(error)setMessage(error.message);else{setMessage(published?'Blog published.':'Blog unpublished.');await load()}
   }
   async function remove(id){if(!window.confirm('Delete this blog?'))return;const{error}=await supabase.from('blogs').delete().eq('id',id);if(error)setMessage(error.message);else{setMessage('Blog deleted.');await load()}}
   if(session===undefined)return <section className="section"><div className="container narrow"><div className="empty-state">Checking admin access...</div></div></section>;
-  if(!session)return <AdminLocked title="Blog Management" description="This area is ready for Supabase Auth administrators. Sign in through your existing Supabase Auth setup, then return here to create and manage published articles."/>;
-  return <section className="section"><div className="container admin-page"><div className="section-heading"><div><span className="eyebrow">Protected workspace</span><h1>Blog Management</h1></div><span className="admin-user">{session.user.email}</span></div>{message&&<div className="admin-message">{message}</div>}<form className="admin-form" onSubmit={e=>save(e,form.published)}><input required placeholder="Blog Title" value={form.title} onChange={e=>set('title',e.target.value)}/><input placeholder="Slug (optional)" value={form.slug} onChange={e=>set('slug',e.target.value)}/><select value={form.category} onChange={e=>set('category',e.target.value)}>{categories.map(category=><option key={category}>{category}</option>)}</select><input placeholder="Cover Image URL" value={form.cover_image} onChange={e=>set('cover_image',e.target.value)}/><input className="wide" placeholder="Short Description" value={form.excerpt} onChange={e=>set('excerpt',e.target.value)}/><div className="editor-field wide"><div className="editor-toolbar"><button type="button" onClick={()=>insertMarkdown('## ','','Heading')}>Heading</button><button type="button" onClick={()=>insertMarkdown('','','Paragraph')}>Paragraph</button><button type="button" onClick={()=>insertMarkdown('**','**','bold')}>Bold</button><button type="button" onClick={()=>insertMarkdown('*','*','italic')}>Italic</button><button type="button" onClick={()=>insertMarkdown('- ','','bullet item')}>Bullet List</button><button type="button" onClick={()=>insertMarkdown('1. ','','numbered item')}>Numbered List</button><button type="button" onClick={()=>insertMarkdown('[','](https://example.com)','link text')}>Link</button><button type="button" onClick={()=>insertMarkdown('![',' ](https://example.com/image.jpg)','image alt text')}>Image</button></div><textarea ref={contentRef} required placeholder="Blog Content — use the toolbar for basic formatting" value={form.content} onChange={e=>set('content',e.target.value)}/></div><input placeholder="SEO Title" value={form.seo_title} onChange={e=>set('seo_title',e.target.value)}/><input placeholder="SEO Description" value={form.meta_description} onChange={e=>set('meta_description',e.target.value)}/><input placeholder="Tags" value={form.keywords} onChange={e=>set('keywords',e.target.value)}/><input type="date" value={form.published_at} onChange={e=>set('published_at',e.target.value)}/><label className="check-label"><input type="checkbox" checked={form.published} onChange={e=>set('published',e.target.checked)}/><span>Published</span></label><div className="admin-form-actions"><button type="button" className="btn secondary" disabled={busy} onClick={e=>save(e,false)}>Save Draft</button><button type="button" className="btn primary" disabled={busy} onClick={e=>save(e,true)}>{busy?'Saving...':editing?'Publish / Update':'Publish'}</button>{editing&&<button type="button" className="btn secondary" onClick={reset}>Cancel</button>}</div></form><div className="admin-list"><h2>Articles</h2>{posts.length?posts.map(post=><article className="admin-row" key={post.id}><div><span className="category">{post.category}</span><h3>{post.title}</h3><small>{post.published?'Published':'Draft'} · {formatDate(post.published_at||post.created_at)} · {post.slug}</small></div><div className="admin-row-actions"><button className="btn secondary" onClick={()=>edit(post)}>Edit</button><button className="btn secondary" onClick={()=>togglePublished(post)}>{post.published?'Unpublish':'Publish'}</button><button className="btn secondary danger" onClick={()=>remove(post.id)}>Delete</button></div></article>):<div className="empty-state">No articles yet.</div>}</div></div></section>
+  if(!session)return <section className="section"><div className="container narrow admin-locked"><span className="eyebrow">Protected workspace</span><h1>Blog Management</h1><p className="lead">This area is ready for Supabase Auth administrators. Sign in through your existing Supabase Auth setup, then return here to create and manage published articles.</p><div className="guidance-note"><LockKeyhole size={19}/><span>Public visitors can only read blogs where <strong>published = true</strong>.</span></div><p className="muted">Setup note: enable Supabase Auth and mark approved users with <code>app_metadata.role = 'admin'</code>. The accompanying schema includes the protected policy required for blog management.</p></div></section>;
+  return <section className="section"><div className="container admin-page"><div className="section-heading"><div><span className="eyebrow">Protected workspace</span><h1>Blog Management</h1></div><span className="admin-user">{session.user.email}</span></div>{message&&<div className="admin-message">{message}</div>}<form className="admin-form" onSubmit={save}><input required placeholder="Title" value={form.title} onChange={e=>set('title',e.target.value)}/><input placeholder="Slug (optional)" value={form.slug} onChange={e=>set('slug',e.target.value)}/><select value={form.category} onChange={e=>set('category',e.target.value)}>{categories.map(category=><option key={category}>{category}</option>)}</select><input placeholder="Cover Image URL" value={form.cover_image} onChange={e=>set('cover_image',e.target.value)}/><input className="wide" placeholder="Short Description" value={form.excerpt} onChange={e=>set('excerpt',e.target.value)}/><textarea className="wide" required placeholder="Content" value={form.content} onChange={e=>set('content',e.target.value)}/><input placeholder="SEO Title" value={form.seo_title} onChange={e=>set('seo_title',e.target.value)}/><input placeholder="SEO Description" value={form.meta_description} onChange={e=>set('meta_description',e.target.value)}/><input placeholder="Tags" value={form.keywords} onChange={e=>set('keywords',e.target.value)}/><input type="date" value={form.published_at} onChange={e=>set('published_at',e.target.value)}/><label className="check-label"><input type="checkbox" checked={form.published} onChange={e=>set('published',e.target.checked)}/><span>Published</span></label><div className="admin-form-actions"><button className="btn primary" disabled={busy}>{busy?'Saving...':editing?'Update Blog':'Create Blog'}</button>{editing&&<button type="button" className="btn secondary" onClick={reset}>Cancel</button>}</div></form><div className="admin-list"><h2>Articles</h2>{posts.length?posts.map(post=><article className="admin-row" key={post.id}><div><span className="category">{post.category}</span><h3>{post.title}</h3><small>{post.published?'Published':'Draft'} · {post.slug}</small></div><div className="admin-row-actions"><button className="btn secondary" onClick={()=>edit(post)}>Edit</button><button className="btn secondary danger" onClick={()=>remove(post.id)}>Delete</button></div></article>):<div className="empty-state">No articles yet.</div>}</div></div></section>
 }
 
 function Home({quote}){
+  useSeo({title:'Insurance Gyani | Insurance Made Simple',description:'Insurance Gyani provides simple, personalised guidance for health, term life, motor and other insurance. Understand and compare your options before you buy.',path:'/'});
   return <><main><section className="hero"><div className="container hero-grid"><div><span className="eyebrow">Insurance made simple</span><h1>Protect What Matters.<em>Plan What’s Ahead.</em></h1><p className="hero-copy">Get personalised guidance for Health, Life and Motor Insurance — understand your options and make an informed decision.</p><div className="actions"><button className="btn primary" onClick={()=>quote('Health Insurance','homepage')}>Get Free Quote <ArrowRight size={16}/></button><a className="btn secondary" href={'tel:'+phone}><Phone size={16}/> Talk to an Expert</a></div><div className="trust-row"><span><CheckCircle2/> Clear guidance</span><span><CheckCircle2/> Easy process</span><span><CheckCircle2/> Continued support</span></div></div><div className="hero-visual"><div className="hero-panel"><div className="hero-orb"><ShieldCheck size={67}/></div><h3>Protection, with perspective.</h3><p>Understand coverage, exclusions and policy terms before you decide.</p></div><div className="floating-product"><HeartPulse/><b>Health</b><small>Protection</small></div><div className="floating-product"><CarFront/><b>Motor</b><small>Assistance</small></div></div></div></section><section className="section"><div className="container"><div className="section-heading"><div><span className="eyebrow">Insurance solutions</span><h2>Protection for the things that matter.</h2></div><p>Explore the basics first, then have a conversation about what fits your life.</p></div><ProductCards quote={quote}/></div></section><Finder quote={quote}/><WhySection/><TrustSection/><Process/><section className="section"><div className="container knowledge-grid"><div className="knowledge-list">{[['What is Health Insurance?',HeartPulse,'Start with hospitalisation, family cover and the terms that shape a policy.'],['What is Term Insurance?',ShieldCheck,'Understand financial protection for the people who depend on you.'],['What is Motor Insurance?',CarFront,'Know the difference between own damage, IDV and third-party cover.'],['What is a Waiting Period?',Clock3,'A simple explanation of when specific benefits become available.']].map(([title,Icon,text])=><article className="knowledge-card" key={title}><Icon size={22}/><h3>{title}</h3><p>{text}</p></article>)}</div><div className="knowledge-aside"><span className="eyebrow">Insurance Gyani Knowledge Center</span><h2>Good questions lead to better protection.</h2><p className="muted">Read straightforward guides written to help you enter an insurance conversation with confidence.</p><Link className="btn secondary" to="/blogs">Browse all guides <ArrowRight size={16}/></Link></div></div></section><AdvisorBand/><BlogsPreview/><CTA quote={quote}/></main></>
 }
+
+function IpIcon({Icon}){return <span className="ip-ic"><Icon size={22}/></span>}
+
+const whyIgPoints=[
+  ['01','Compare Before You Buy','Understand important differences between available options.'],
+  ['02','Clear Guidance','Simple explanation of coverage, exclusions and important conditions.'],
+  ['03','Personalised Assistance','Get help based on your requirement instead of choosing only on premium.'],
+  ['04','No-Obligation Guidance','Understand your options before making a decision.']
+];
+function WhyIG(){
+  return <section className="section why-ig-band"><div className="container">
+    <div className="section-heading"><div><span className="eyebrow">Why Insurance Gyani</span><h2>Why Insurance Gyani?</h2></div><p>Honest, simple guidance that helps you decide with confidence.</p></div>
+    <div className="whyig-grid" data-testid="whyig-grid">{whyIgPoints.map(([n,t,d])=><article className="glass-card whyig-card" key={n}><span className="premium-num">{n}</span><h3>{t}</h3><p>{d}</p></article>)}</div>
+  </div></section>
+}
+const journeySteps=[[BookOpen,'Understand','Learn what actually matters before you buy.'],[SlidersHorizontal,'Compare','See how options differ, beyond just the premium.'],[Headphones,'Get Guidance','Personalised, no-obligation help for your decision.']];
+function Journey({quote,type,source}){
+  return <section className="section"><div className="container">
+    <div className="section-heading"><div><span className="eyebrow">Simple process</span><h2>Understand → Compare → Get Guidance</h2></div><p>A clear path to choosing the right cover with confidence.</p></div>
+    <div className="journey-grid" data-testid="journey-grid">{journeySteps.map(([Icon,t,d],i)=><article className="glass-card journey-step" key={t}><span className="premium-num">{i+1}</span><IpIcon Icon={Icon}/><h3>{t}</h3><p>{d}</p></article>)}</div>
+    <div className="journey-cta">
+      <button className="btn primary" onClick={()=>quote(type,source)} data-testid="journey-compare-cta">Compare Plans <ArrowRight size={16}/></button>
+      <button className="btn secondary" onClick={()=>quote(type,source)} data-testid="journey-guidance-cta">Get Personalised Guidance</button>
+      <a className="btn secondary" href={waLink(type)} target="_blank" rel="noreferrer" data-testid="journey-whatsapp-cta"><MessageCircle size={16}/> Talk to an Expert</a>
+    </div>
+  </div></section>
+}
+
+function InsurancePage({cfg,quote}){
+  useSeo({title:cfg.title+' | Insurance Gyani',description:cfg.meta,path:cfg.path});
+  return <div data-testid={cfg.testid}>
+    <section className="ip-hero"><div className="container ip-hero-grid">
+      <div>
+        <span className="eyebrow">{cfg.eyebrow}</span>
+        <h1>{cfg.heroTitle}</h1>
+        <p className="ip-hero-copy">{cfg.heroCopy}</p>
+        <ul className="ip-hero-points">{cfg.heroPoints.map(p=><li key={p}><CheckCircle2 size={17}/>{p}</li>)}</ul>
+        <div className="actions">
+          <button className="btn primary" onClick={()=>quote(cfg.type,cfg.source)} data-testid="ip-hero-cta">{cfg.cta} <ArrowRight size={16}/></button>
+          <a className="btn secondary" href={waLink(cfg.type)} target="_blank" rel="noreferrer" data-testid="ip-whatsapp-cta"><MessageCircle size={16}/> Talk to an Expert</a>
+        </div>
+      </div>
+      <aside className="ip-hero-card glass-card">
+        <span className="ip-badge">{cfg.badge}</span>
+        <h3>{cfg.cardTitle}</h3>
+        <p>{cfg.cardText}</p>
+        <div className="ip-hero-stats">{cfg.stats.map(([n,l])=><div key={l}><b>{n}</b><span>{l}</span></div>)}</div>
+      </aside>
+    </div></section>
+
+    <section className="section"><div className="container">
+      <div className="section-heading"><div><span className="eyebrow">Understand it first</span><h2>{cfg.explainHeading}</h2></div><p>{cfg.explainSub}</p></div>
+      <div className="explain-grid">{cfg.explain.map(([Icon,t,d])=><article className="glass-card explain-card" key={t}><IpIcon Icon={Icon}/><h3>{t}</h3><p>{d}</p></article>)}</div>
+    </div></section>
+
+    <section className="section light-band"><div className="container">
+      <div className="section-heading"><div><span className="eyebrow">Compare before you buy</span><h2>{cfg.compareHeading}</h2></div><p>{cfg.compareSub}</p></div>
+      <div className="compare-grid">{cfg.compare.map(([Icon,t,d])=><article className="glass-card compare-card" key={t}><IpIcon Icon={Icon}/><div><h3>{t}</h3><p>{d}</p></div></article>)}</div>
+      <div className="compare-cta"><button className="btn primary" onClick={()=>quote(cfg.type,cfg.source)} data-testid="ip-compare-cta">{cfg.compareCta} <ArrowRight size={16}/></button></div>
+    </div></section>
+
+    <Journey quote={quote} type={cfg.type} source={cfg.source}/>
+
+    <section className="section"><div className="container">
+      <div className="premium-grid">
+        <div className="premium-intro glass-dark">
+          <span className="ip-badge dark">{cfg.beyondBadge}</span>
+          <h2>{cfg.beyondTitle}</h2>
+          <p>{cfg.beyondText}</p>
+          <button className="btn primary" onClick={()=>quote(cfg.type,cfg.source)} data-testid="ip-beyond-cta">{cfg.beyondCta} <ArrowRight size={16}/></button>
+        </div>
+        {cfg.beyond.map(([num,Icon,t,d])=><article className="glass-card premium-card" key={num}>
+          <div className="premium-card-top"><span className="premium-num">{num}</span><IpIcon Icon={Icon}/></div>
+          <h3>{t}</h3><p>{d}</p>
+        </article>)}
+      </div>
+    </div></section>
+
+    <WhyIG/>
+
+    <CTA quote={quote} heading={cfg.ctaHeading} text={cfg.ctaText} button={cfg.cta} type={cfg.type} source={cfg.source}/>
+  </div>
+}
+
+const healthCfg={
+  title:'Health Insurance',testid:'health-page',type:'Health Insurance',source:'health-page',path:'/health-insurance',
+  meta:'Understand health insurance, compare multiple plans and know what to check before buying with personalised guidance from Insurance Gyani.',
+  eyebrow:'Health Insurance guidance',
+  heroTitle:'Compare Health Plans With Clarity.',
+  heroCopy:'Understand your coverage before you buy. Insurance Gyani helps you compare multiple health insurers and plans, and get personalised assistance for your family.',
+  heroPoints:['Compare multiple insurers & plans','Understand coverage, not just premium','Personalised, need-based guidance'],
+  cta:'Compare Health Plans',
+  badge:'WHY IT MATTERS',cardTitle:'Protection when it matters most.',cardText:'A single hospitalisation can affect years of savings. The right health cover keeps your finances steady while you focus on recovery.',
+  stats:[['Family','Floater options'],['Cashless','Network hospitals'],['Tax','Section 80D*']],
+  explainHeading:'Health insurance, explained simply.',explainSub:'Start with the basics, then compare confidently.',
+  explain:[
+    [HeartPulse,'What is Health Insurance?','A health insurance policy helps cover eligible hospitalisation and medical expenses as per the policy terms, so a medical event does not become a financial one.'],
+    [ShieldPlus,'Why do I need it?','Medical costs rise every year. Cover protects your savings, gives access to quality treatment and offers cashless convenience at network hospitals.'],
+    [FileCheck,'What does it generally cover?','Typically in-patient hospitalisation, pre & post hospitalisation, day-care procedures and more, subject to the sum insured, limits and policy wording.'],
+    [SlidersHorizontal,'What should I check?','Look beyond premium: sum insured, room-rent limits, waiting periods, exclusions, restoration, no claim bonus and network hospitals.']
+  ],
+  compareHeading:'Compare Multiple Health Insurance Options',compareSub:'Understand the differences before you choose.',
+  compareCta:'Compare Plans',
+  compare:[
+    [IndianRupee,'Premium','What you pay yearly. The lowest premium is not always the best value once you check the cover.'],
+    [ShieldCheck,'Sum Insured','The maximum cover available in a policy year. Choose an amount that suits your city and family.'],
+    [BedDouble,'Room Rent','Room category limits can affect the whole bill. Prefer plans with no or high room-rent capping.'],
+    [Clock3,'Waiting Period','Time before certain conditions are covered. Shorter, clearer waiting periods are better.'],
+    [Stethoscope,'Pre-existing Disease','How and when existing conditions are covered. Compare the waiting period across plans.'],
+    [Baby,'Maternity & OPD','Maternity, newborn and OPD benefits differ widely. Check limits and applicable waiting periods.'],
+    [Repeat,'Restoration','Restores your sum insured after it is used in a policy year, useful for families.'],
+    [Award,'No Claim Bonus','Rewards claim-free years by increasing your cover, without raising the premium.'],
+    [Building2,'Network Hospitals','A wider cashless network means smoother treatment near you.'],
+    [ClipboardCheck,'Claims','Claim process, documentation and settlement approach matter as much as the price.']
+  ],
+  beyondBadge:'BEFORE YOU BUY',beyondTitle:'Look past the premium.',beyondText:'Ask what changes the experience. A lower premium can mean higher out-of-pocket costs later. These are the details worth comparing before you choose.',beyondCta:'Get Personalised Guidance',
+  beyond:[
+    ['01',IndianRupee,'Premium','Compare value, not just the sticker price. Understand what you actually get for the premium you pay.'],
+    ['02',ShieldCheck,'Sum Insured','Pick a cover that reflects rising medical costs in your city and your family size.'],
+    ['03',BedDouble,'Room Rent','Room-rent limits can silently reduce your claim. Prefer flexible or no capping.'],
+    ['04',Clock3,'Waiting Period','Know the initial, specific-disease and pre-existing waiting periods before you buy.'],
+    ['05',Stethoscope,'Pre-existing Disease','Understand how existing conditions are treated and when they become payable.'],
+    ['06',Baby,'Maternity & OPD','Check maternity, newborn and OPD benefits along with their limits and conditions.'],
+    ['07',Award,'NCB, Restoration & Hospitals','No claim bonus, restoration and the cashless network together shape your real experience.']
+  ],
+  ctaHeading:'Not sure which health plan fits your family?',ctaText:'Share your requirement and compare multiple health insurance options with clear, unbiased guidance.'
+};
+
+const termCfg={
+  title:'Term Insurance',testid:'term-page',type:'Life Insurance',source:'life-page',path:'/life-insurance',
+  meta:'Understand term insurance, sum assured, policy term, riders and claim settlement, and compare before buying with Insurance Gyani.',
+  eyebrow:'Term Insurance guidance',
+  heroTitle:'Secure Your Family\u2019s Future.',
+  heroCopy:'Term insurance provides pure life cover at an affordable premium. Insurance Gyani helps you understand sum assured, tenure and riders, and compare before you choose.',
+  heroPoints:['High life cover, affordable premium','Understand riders & eligibility','Compare claim settlement approach'],
+  cta:'Compare Term Plans',
+  badge:'WHY IT MATTERS',cardTitle:'Protection for those who depend on you.',cardText:'If something happens to you, term insurance pays your nominee a lump sum, helping your family stay financially secure and continue their plans.',
+  stats:[['High','Sum assured'],['Fixed','Policy term'],['Tax','Section 80C*']],
+  explainHeading:'Term insurance, explained simply.',explainSub:'A clear foundation before you compare plans.',
+  explain:[
+    [ShieldCheck,'What is Term Insurance?','A term plan provides life cover for a chosen period. If the insured passes away during the term, the nominee receives the sum assured, subject to policy terms.'],
+    [Users,'Why is it important?','It replaces your income and protects your family\u2019s goals, loans and lifestyle when they need it most.'],
+    [IndianRupee,'How much cover & premium?','Choose a sum assured that covers income, liabilities and future goals. Term plans offer large cover at a relatively low premium.'],
+    [SlidersHorizontal,'What should I compare?','Sum assured, policy term, premium, riders, eligibility, exclusions and the insurer\u2019s claim settlement track record.']
+  ],
+  compareHeading:'Compare Multiple Term Insurance Options',compareSub:'Understand the differences before you choose.',
+  compareCta:'Compare Plans',
+  compare:[
+    [ShieldCheck,'Sum Assured','The life cover paid to your nominee. Match it to income, loans and long-term family goals.'],
+    [CalendarClock,'Policy Term','How long the cover lasts. Ideally cover your working years and key liabilities.'],
+    [IndianRupee,'Premium','Cost of the cover. Compare value and payment options, not just the lowest figure.'],
+    [ClipboardCheck,'Claim Settlement','Understand the insurer\u2019s claim approach and required documentation before choosing.'],
+    [PlusCircle,'Riders','Optional add-ons like critical illness or accidental cover that strengthen protection.'],
+    [UserCheck,'Eligibility','Age, income and health criteria that affect approval and premium.'],
+    [CircleAlert,'Exclusions','Important conditions and situations that may not be payable. Always read the wording.']
+  ],
+  beyondBadge:'BEFORE YOU BUY',beyondTitle:'Look beyond the premium.',beyondText:'Ask what changes the experience. The cheapest term plan is not always the strongest. These are the details worth comparing before you decide.',beyondCta:'Get Personalised Guidance',
+  beyond:[
+    ['01',ShieldCheck,'Sum Assured','Choose cover that truly protects your family\u2019s income and future goals.'],
+    ['02',CalendarClock,'Policy Term','Align the term with your working years and outstanding liabilities.'],
+    ['03',IndianRupee,'Premium','Balance affordability with the right cover and reliable long-term payment.'],
+    ['04',ClipboardCheck,'Claim Considerations','Honest disclosures and clear documentation make claims smoother for your nominee.'],
+    ['05',PlusCircle,'Riders','Add critical illness or accidental cover where it strengthens your protection.'],
+    ['06',UserCheck,'Eligibility','Understand the age, income and health factors that shape your plan.'],
+    ['07',CircleAlert,'Exclusions','Know the important conditions and exclusions before you sign.']
+  ],
+  ctaHeading:'Planning protection for your family?',ctaText:'Share your requirement and compare multiple term insurance options with clear, unbiased guidance.'
+};
+
+const motorCfg={
+  title:'Motor Insurance',testid:'motor-page',type:'Motor Insurance',source:'motor-page',path:'/motor-insurance',
+  meta:'Understand motor insurance, IDV, add-ons, third-party and own damage cover, and compare before buying with Insurance Gyani.',
+  eyebrow:'Motor Insurance guidance',
+  heroTitle:'Drive Protected. Compare Smart.',
+  heroCopy:'Third-party cover is mandatory, but comprehensive protection keeps you truly secure. Insurance Gyani helps you understand IDV, add-ons and compare before you renew or buy.',
+  heroPoints:['Third-party & comprehensive cover','Understand IDV, add-ons & NCB','Cashless garage guidance'],
+  cta:'Compare Motor Plans',
+  badge:'WHY IT MATTERS',cardTitle:'Protection on every road.',cardText:'An accident, theft or third-party liability can be costly. The right motor policy protects your vehicle and shields you from unexpected expenses.',
+  stats:[['Legal','Third-party cover'],['Own','Damage protection'],['Cashless','Network garages']],
+  explainHeading:'Motor insurance, explained simply.',explainSub:'Know the essentials before you compare.',
+  explain:[
+    [CarFront,'What is Motor Insurance?','A motor policy covers financial losses from accidents, theft, damage and third-party liability for your car or two-wheeler, as per the policy terms.'],
+    [Scale,'Why is it required?','Third-party motor insurance is mandatory by law. Comprehensive cover additionally protects your own vehicle against damage and theft.'],
+    [ShieldCheck,'What does it cover?','Third-party liability, own damage, theft and, with add-ons, benefits like zero depreciation, roadside assistance and engine protection.'],
+    [SlidersHorizontal,'What should I compare?','IDV, premium, add-ons, deductibles, no claim bonus and the cashless garage network before you buy or renew.']
+  ],
+  compareHeading:'Compare Multiple Motor Insurance Options',compareSub:'Understand the differences before you choose.',
+  compareCta:'Compare Plans',
+  compare:[
+    [Gauge,'IDV','Insured Declared Value \u2014 the current market value of your vehicle and the maximum claim on total loss.'],
+    [IndianRupee,'Premium','What you pay for the cover. Compare it against the IDV and included benefits.'],
+    [Scale,'Third-party Cover','Mandatory cover for injury or damage caused to others. Check the liability protection.'],
+    [CarFront,'Own Damage','Covers damage to your own vehicle from accidents, fire or natural events.'],
+    [PlusCircle,'Add-ons','Zero depreciation, roadside assistance, engine and consumables cover that boost protection.'],
+    [Percent,'Deductible','The portion you pay per claim. A lower deductible can mean a higher premium.'],
+    [Award,'No Claim Bonus','A discount for claim-free years that can significantly reduce renewal premium.'],
+    [Wrench,'Garage & Claims','Cashless network garages and a smooth claim process make repairs stress-free.']
+  ],
+  beyondBadge:'BEFORE YOU BUY',beyondTitle:'Look beyond the premium.',beyondText:'Ask what changes the experience. A cheap policy with the wrong IDV or missing add-ons can cost more at claim time. Compare these details first.',beyondCta:'Get Personalised Guidance',
+  beyond:[
+    ['01',Gauge,'IDV','Set the right insured value \u2014 too low reduces your claim, too high raises the premium.'],
+    ['02',IndianRupee,'Premium','Compare value against IDV and the benefits actually included.'],
+    ['03',Scale,'Third-party Cover','Ensure adequate legal liability protection, which is mandatory.'],
+    ['04',CarFront,'Own Damage','Protect your own vehicle against accidents, fire and natural calamities.'],
+    ['05',PlusCircle,'Add-ons','Choose zero depreciation, roadside assistance and engine cover where they matter.'],
+    ['06',Percent,'Deductible','Understand how much you pay per claim and how it affects your premium.'],
+    ['07',Award,'NCB & Garages','No claim bonus and a strong cashless garage network shape your real experience.']
+  ],
+  ctaHeading:'Looking for the right motor cover?',ctaText:'Share your requirement and compare multiple motor insurance options with clear, unbiased guidance.'
+};
 
 function Product({type,quote}){
   const data={Health:['Health Insurance','Protect yourself and your family against unexpected medical expenses.',['Individual Health Insurance','Family Health Insurance','Senior Citizen Health Insurance','Maternity Insurance','Critical Illness Insurance','Top-up & Super Top-up','Personal Accident Insurance','Health Insurance Portability'],HeartPulse],Life:['Life Insurance','Create financial protection for the people who depend on you.',['Term Insurance','Life Protection','Family Financial Protection','Income Protection','Long-term Protection'],ShieldCheck],Motor:['Motor Insurance','Protect your car or two-wheeler from unexpected financial losses.',['Car Insurance','Two-Wheeler Insurance','Comprehensive Insurance','Third Party Insurance','Own Damage','Motor Renewal'],CarFront],Other:['Other Insurance','Explore protection for travel, accidents and other everyday risks.',['Travel Insurance','Personal Accident Insurance','Other Protection Requirements'],Plane]}[type];
   const Icon=data[3];
-  const cta={Health:['Not sure which health insurance is right for you?','GET PERSONAL GUIDANCE','health-page'],Life:['Planning protection for your family?','TALK TO AN EXPERT','life-page'],Motor:['Looking for the right motor cover?','GET A QUOTE','motor-page'],Other:['Have an insurance question?','GET PERSONAL GUIDANCE','contact']}[type];
+  const cta={Health:['Not sure which health insurance is right for you?','GET PERSONAL GUIDANCE','health-page'],Life:['Planning protection for your family?','TALK TO AN EXPERT','life-page'],Motor:['Looking for the right motor cover?','GET A QUOTE','motor-page'],Other:['Have an insurance question?','GET PERSONAL GUIDANCE','other-insurance']}[type];
   return <><section className="inner-hero"><div className="container"><span className="eyebrow">Insurance education</span><h1>{data[0]}</h1><p>{data[1]}</p><button className="btn primary" onClick={()=>quote(data[0],cta[2])}>Get Free Quote <ArrowRight size={16}/></button></div></section><section className="section"><div className="container product-detail"><div><span className="eyebrow">What you can explore</span><h2>Know the cover before you choose.</h2><ul className="explore-list">{data[2].map(item=><li key={item}><CheckCircle2/>{item}</li>)}</ul></div><div className="info-card"><Icon size={35} color="var(--gold)"/><h3>Make an informed decision.</h3><p>Coverage, exclusions, waiting periods, eligibility and underwriting can vary by insurer and product. Always review the policy wording and ask questions before moving ahead.</p><button className="btn primary" onClick={()=>quote(data[0],cta[2])}>Discuss Your Requirement <ArrowRight size={16}/></button></div></div></section><CTA quote={quote} heading={cta[0]} button={cta[1]} type={data[0]} source={cta[2]}/></>
 }
 
@@ -325,33 +462,25 @@ function BecomeAdvisor(){
 
 function About({quote}){
   const help=[['Health Insurance',HeartPulse,'Understand medical cover, waiting periods and family protection.'],['Life Insurance',ShieldCheck,'Explore financial protection and long-term planning.'],['Motor Insurance',CarFront,'Make sense of car, bike, own-damage and third-party cover.'],['Insurance Education',BookOpen,'Build a clearer foundation before a policy conversation.'],['Insurance Guidance',Stethoscope,'Ask better questions about your needs and options.'],['Customer Assistance',Headphones,'Find a considered point of contact for service questions.']];
-  return <><section className="inner-hero"><div className="container"><span className="eyebrow">About Insurance Gyani</span><h1>Insurance, in a language people can use.</h1><p>Insurance Gyani is an insurance education and assistance platform created to make insurance easier to understand.</p></div></section><section className="section"><div className="container about-intro"><div><span className="eyebrow">Our mission</span><h2>Make protection decisions feel more informed.</h2><p>To make insurance easier to understand and help people make more informed protection decisions.</p></div><div className="mission-card"><ShieldCheck size={34}/><h3>Understand first. Choose with confidence.</h3><p>We believe an insurance conversation should leave you clearer, not more overwhelmed.</p></div></div></section><section className="section light-band"><div className="container"><span className="eyebrow">What we help with</span><h2>Guidance across the protection journey.</h2><div className="help-grid">{help.map(([title,Icon,text])=><article className="help-card" key={title}><Icon size={23}/><h3>{title}</h3><p>{text}</p></article>)}</div></div></section><CTA quote={quote}/></>
+  return <><section className="inner-hero"><div className="container"><span className="eyebrow">About Insurance Gyani</span><h1>Insurance, in a language people can use.</h1><p>Insurance Gyani is an insurance education and assistance platform created to make insurance easier to understand.</p></div></section><section className="section"><div className="container about-intro"><div><span className="eyebrow">Our mission</span><h2>Make protection decisions feel more informed.</h2><p>To make insurance easier to understand and help people make more informed protection decisions.</p></div><div className="mission-card"><ShieldCheck size={34}/><h3>Understand first. Choose with confidence.</h3><p>We believe an insurance conversation should leave you clearer, not more overwhelmed.</p><SocialLinks variant="about-social"/></div></div></section><section className="section light-band"><div className="container"><span className="eyebrow">What we help with</span><h2>Guidance across the protection journey.</h2><div className="help-grid">{help.map(([title,Icon,text])=><article className="help-card" key={title}><Icon size={23}/><h3>{title}</h3><p>{text}</p></article>)}</div></div></section><CTA quote={quote}/></>
 }
 
 function Contact({quote}){
-  return <><section className="contact"><div className="container contact-layout"><div><span className="eyebrow">Contact Insurance Gyani</span><h1>Let’s talk about your insurance requirement.</h1><p className="contact-intro">Need help with health, life, motor or other insurance? Get in touch with our team.</p><div className="contact-items"><a className="contact-item" href={'tel:'+phone}><Phone/><span><strong>Call us</strong>{phone}</span></a><a className="contact-item" href={'mailto:'+email}><Mail/><span><strong>Email</strong>{email}</span></a><a className="contact-item" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle/><span><strong>WhatsApp</strong>Chat with us</span></a></div><div className="contact-actions"><a className="btn primary" href={'tel:'+phone}><Phone size={16}/> Call Now</a><a className="btn secondary" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp</a><button className="btn secondary" onClick={()=>quote('Health Insurance','contact')}>Get Free Quote <ArrowRight size={16}/></button></div></div><div className="contact-card"><LockKeyhole size={30}/><h3>Your information stays private.</h3><p>We use submitted details only to respond to your insurance requirement. Do not share sensitive financial or identity documents through the form.</p><button className="btn primary full" onClick={()=>quote('Health Insurance','contact')}>Start Your Requirement <ArrowRight size={16}/></button></div></div></section><HelpCTA quote={quote}/></>
+  return <><section className="contact"><div className="container contact-layout"><div><span className="eyebrow">Contact Insurance Gyani</span><h1>Let’s talk about your insurance requirement.</h1><p className="contact-intro">Need help with health, life, motor or other insurance? Get in touch with our team.</p><div className="contact-items"><a className="contact-item" href={'tel:'+phone}><Phone/><span><strong>Call us</strong>{phone}</span></a><a className="contact-item" href={'mailto:'+email}><Mail/><span><strong>Email</strong>{email}</span></a><a className="contact-item" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle/><span><strong>WhatsApp</strong>Chat with us</span></a></div><div className="contact-social"><span className="social-label">Follow Insurance Gyani</span><SocialLinks/></div><div className="contact-actions"><a className="btn primary" href={'tel:'+phone}><Phone size={16}/> Call Now</a><a className="btn secondary" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp</a><button className="btn secondary" onClick={()=>quote('Health Insurance','contact')}>Get Free Quote <ArrowRight size={16}/></button></div></div><div className="contact-card"><LockKeyhole size={30}/><h3>Your information stays private.</h3><p>We use submitted details only to respond to your insurance requirement. Do not share sensitive financial or identity documents through the form.</p><button className="btn primary full" onClick={()=>quote('Health Insurance','contact')}>Start Your Requirement <ArrowRight size={16}/></button></div></div></section><HelpCTA quote={quote}/></>
 }
 
 function Blogs({quote}){
   const[posts,setPosts]=useState([]),[loading,setLoading]=useState(true);
   useEffect(()=>{let active=true;(async()=>{if(!supabase){setLoading(false);return}const{data}=await supabase.from('blogs').select('*').eq('published',true).order('published_at',{ascending:false});if(active)setPosts(data||[]);setLoading(false)})();return()=>{active=false}},[]);
-  return <><section className="section"><div className="container"><span className="eyebrow">Insurance Gyani Knowledge Center</span><h1>Insurance, explained clearly.</h1><p className="lead">Simple explanations and practical education for health, life, motor and everyday protection questions.</p>{loading?<div className="empty-state">Loading published articles...</div>:posts.length?<div className="blogs-grid">{posts.map(post=><article className="blog-card" key={post.slug}><div className="blog-art">{post.cover_image?<img src={post.cover_image} alt="" />:<BookOpen size={30}/>}</div><div className="blog-content"><span className="category">{post.category||'Insurance Tips'}</span><h3>{post.title}</h3><p>{post.excerpt}</p><small className="blog-date">{formatDate(post.published_at||post.created_at)}</small><Link className="text-link" to={'/blog/'+post.slug}>Read article <ArrowRight size={15}/></Link></div></article>)}</div>:<div className="empty-state">New articles are on the way. In the meantime, call us for help understanding your insurance requirement.</div>}</div></section><CTA quote={quote} heading="Still confused about your insurance?" text="Get personalised guidance based on your requirement." button="GET PERSONALISED GUIDANCE" source="blog"/></>
+  return <><section className="section"><div className="container"><span className="eyebrow">Insurance Gyani Knowledge Center</span><h1>Insurance, explained clearly.</h1><p className="lead">Simple explanations and practical education for health, life, motor and everyday protection questions.</p>{loading?<div className="empty-state">Loading published articles...</div>:posts.length?<div className="blogs-grid">{posts.map(post=><article className="blog-card" key={post.slug}><div className="blog-art">{post.cover_image?<img src={post.cover_image} alt="" />:<BookOpen size={30}/>}</div><div className="blog-content"><span className="category">{post.category||'Insurance Tips'}</span><h3>{post.title}</h3><p>{post.excerpt}</p><Link className="text-link" to={'/blog/'+post.slug}>Read article <ArrowRight size={15}/></Link></div></article>)}</div>:<div className="empty-state">New articles are on the way. In the meantime, call us for help understanding your insurance requirement.</div>}</div></section><CTA quote={quote} heading="Still confused about your insurance?" text="Get personalised guidance based on your requirement." button="GET PERSONALISED GUIDANCE" source="blog"/></>
 }
 
 function Post({quote}){
   const{slug}=useParams(),[post,setPost]=useState(null),[loading,setLoading]=useState(true);
   useEffect(()=>{let active=true;(async()=>{if(!supabase){setLoading(false);return}const{data}=await supabase.from('blogs').select('*').eq('slug',slug).eq('published',true).single();if(active)setPost(data||null);setLoading(false)})();return()=>{active=false}},[slug]);
-  useEffect(()=>{
-    if(!post)return;
-    document.title=post.seo_title||post.title||'Insurance Gyani';
-    let meta=document.querySelector('meta[name="description"]');
-    if(!meta){meta=document.createElement('meta');meta.name='description';document.head.appendChild(meta)}
-    meta.content=post.meta_description||post.excerpt||post.title||'Insurance guidance from Insurance Gyani.';
-    return()=>{document.title='Insurance Gyani'}
-  },[post]);
   if(loading)return <section className="section narrow"><div className="empty-state">Loading article...</div></section>;
   if(!post)return <section className="section narrow"><span className="eyebrow">Knowledge Center</span><h1>Article not found</h1><Link className="btn secondary" to="/blogs">Back to Blogs <ArrowRight size={16}/></Link></section>;
-  return <><section className="section"><div className="container article"><span className="eyebrow">{post.category||'Insurance Tips'}</span><h1>{post.title}</h1><small className="blog-date">{formatDate(post.published_at||post.created_at)}</small>{post.cover_image&&<img className="article-cover" src={post.cover_image} alt="" />}<p className="lead">{post.excerpt}</p><div className="article-content">{renderBlogContent(post.content)}</div></div></section><CTA quote={quote} heading="Still confused about your insurance?" text="Get personalised guidance based on your requirement." button="GET PERSONALISED GUIDANCE" source="blog" blogSlug={post.slug}/></>
+  return <><section className="section"><div className="container article"><span className="eyebrow">{post.category||'Insurance Tips'}</span><h1>{post.title}</h1><p className="lead">{post.excerpt}</p>{String(post.content||'').split('\n').filter(Boolean).map((paragraph,index)=><p key={index}>{paragraph}</p>)}</div></section><CTA quote={quote} heading="Still confused about your insurance?" text="Get personalised guidance based on your requirement." button="GET PERSONALISED GUIDANCE" source="blog" blogSlug={post.slug}/></>
 }
 
 function FAQs({quote}){
@@ -364,15 +493,25 @@ function Legal({title}){
 }
 
 function Footer(){
-  return <footer className="site-footer"><div className="container"><div className="footer-grid"><div><Link className="footer-brand" to="/"><img src="/insurance-gyani-logo-white-bg.png" alt="Insurance Gyani logo"/><span className="brand-word">Insurance<span>GYANI</span></span></Link><p className="footer-copy">Understand Insurance. Choose With Confidence.</p><div className="footer-contact"><a href={'tel:'+phone}>{phone}</a><a href={'mailto:'+email}>{email}</a></div></div><div className="footer-col"><h4>INSURANCE</h4><div className="footer-links">{insuranceNav.map(([label,path])=><Link key={path} to={path}>{label}</Link>)}<Link to="/other-insurance">Personal Accident</Link><Link to="/other-insurance">Travel Insurance</Link></div></div><div className="footer-col"><h4>COMPANY</h4><div className="footer-links"><Link to="/about">About Insurance Gyani</Link><Link to="/why-insurance-gyani">Why Insurance Gyani</Link><Link to="/become-insurance-advisor">Become Insurance Advisor</Link><Link to="/contact">Contact Us</Link></div></div><div className="footer-col"><h4>RESOURCES</h4><div className="footer-links"><Link to="/blogs">Blogs</Link><Link to="/faqs">Insurance FAQs</Link><Link to="/blogs">Insurance Guides</Link><Link to="/claims-support">Claims Support</Link><Link to="/blogs">Insurance Glossary</Link></div></div></div><div className="footer-bottom"><span>Insurance is the subject matter of solicitation.</span><div><Link to="/privacy-policy">Privacy Policy</Link><Link to="/terms">Terms &amp; Conditions</Link><Link to="/disclaimer">Disclaimer</Link><span>© 2026 Insurance Gyani. All Rights Reserved.</span></div></div></div></footer>
+  return <footer className="site-footer"><div className="container"><div className="footer-grid"><div><Link className="footer-brand" to="/"><img src="/insurance-gyani-logo-white-bg.png" alt="Insurance Gyani logo"/><span className="brand-word">Insurance<span>GYANI</span></span></Link><p className="footer-copy">Understand Insurance. Choose With Confidence.</p><div className="footer-contact"><a href={'tel:'+phone}>{phone}</a><a href={'mailto:'+email}>{email}</a></div><SocialLinks variant="footer-social"/></div><div className="footer-col"><h4>INSURANCE</h4><div className="footer-links">{insuranceNav.map(([label,path])=><Link key={path} to={path}>{label}</Link>)}<Link to="/other-insurance">Personal Accident</Link><Link to="/other-insurance">Travel Insurance</Link></div></div><div className="footer-col"><h4>COMPANY</h4><div className="footer-links"><Link to="/about">About Insurance Gyani</Link><Link to="/why-insurance-gyani">Why Insurance Gyani</Link><Link to="/become-insurance-advisor">Become Insurance Advisor</Link><Link to="/contact">Contact Us</Link></div></div><div className="footer-col"><h4>RESOURCES</h4><div className="footer-links"><Link to="/blogs">Blogs</Link><Link to="/faqs">Insurance FAQs</Link><Link to="/blogs">Insurance Guides</Link><Link to="/claims-support">Claims Support</Link><Link to="/blogs">Insurance Glossary</Link></div></div></div><div className="footer-bottom"><span>Insurance is the subject matter of solicitation.</span><div><Link to="/privacy-policy">Privacy Policy</Link><Link to="/terms">Terms &amp; Conditions</Link><Link to="/disclaimer">Disclaimer</Link><span>© 2026 Insurance Gyani. All Rights Reserved.</span></div></div></div></footer>
 }
 
 function Layout({children,quote}){return <><Header quote={quote}/>{children}<div className="float-actions"><a href={'tel:'+phone} aria-label="Call Insurance Gyani"><Phone size={20}/></a><a href={'https://wa.me/'+wa} target="_blank" rel="noreferrer" aria-label="WhatsApp Insurance Gyani"><MessageCircle size={20}/></a></div><Footer/></>}
 
+function NotFound(){
+  useSeo({title:'Page Not Found | Insurance Gyani',description:'The page you are looking for does not exist. Return to the Insurance Gyani homepage.',path:'/404'});
+  return <section className="notfound"><div className="container nf-inner">
+    <span className="ip-badge">ERROR 404</span>
+    <h1 data-testid="notfound-title">Oops! This page doesn't exist.</h1>
+    <p>The page you are looking for may have been moved, renamed or is no longer available.</p>
+    <Link className="btn primary" to="/" data-testid="notfound-home"><ShieldCheck size={16}/> Back to Home</Link>
+  </div></section>
+}
+
 function App(){
   const[leadType,setLeadType]=useState('Health Insurance'),[leadSource,setLeadSource]=useState('homepage'),[blogSlug,setBlogSlug]=useState(''),[show,setShow]=useState(false);
   const quote=(type,source='homepage',slug='')=>{setLeadType(type||'Health Insurance');setLeadSource(source);setBlogSlug(slug);setShow(true)};
-  return <Layout quote={quote}><Routes><Route path="/" element={<Home quote={quote}/>}/><Route path="/health-insurance" element={<Product type="Health" quote={quote}/>}/><Route path="/life-insurance" element={<Product type="Life" quote={quote}/>}/><Route path="/motor-insurance" element={<Product type="Motor" quote={quote}/>}/><Route path="/other-insurance" element={<Product type="Other" quote={quote}/>}/><Route path="/why-insurance-gyani" element={<WhyUs quote={quote}/>}/><Route path="/become-insurance-advisor" element={<BecomeAdvisor/>}/><Route path="/about" element={<About quote={quote}/>}/><Route path="/blogs" element={<Blogs quote={quote}/>}/><Route path="/blog/:slug" element={<Post quote={quote}/>}/><Route path="/claims-support" element={<ClaimsSupport quote={quote}/>}/><Route path="/contact" element={<Contact quote={quote}/>}/><Route path="/faqs" element={<FAQs quote={quote}/>}/><Route path="/admin/leads" element={<AdminLeads/>}/><Route path="/admin/advisor-leads" element={<AdminAdvisorLeads/>}/><Route path="/admin/blogs" element={<AdminBlogs/>}/><Route path="/privacy-policy" element={<Legal title="Privacy Policy"/>}/><Route path="/terms" element={<Legal title="Terms & Conditions"/>}/><Route path="/disclaimer" element={<Legal title="Disclaimer"/>}/></Routes>{show&&<Lead initialType={leadType} source={leadSource} blogSlug={blogSlug} submitLabel={leadSource==='claims-support'?'GET CLAIM GUIDANCE':'GET PERSONALISED GUIDANCE'} close={()=>setShow(false)}/>}</Layout>
+  return <Layout quote={quote}><Routes><Route path="/" element={<Home quote={quote}/>}/><Route path="/health-insurance" element={<InsurancePage cfg={healthCfg} quote={quote}/>}/><Route path="/life-insurance" element={<InsurancePage cfg={termCfg} quote={quote}/>}/><Route path="/motor-insurance" element={<InsurancePage cfg={motorCfg} quote={quote}/>}/><Route path="/other-insurance" element={<Product type="Other" quote={quote}/>}/><Route path="/why-insurance-gyani" element={<WhyUs quote={quote}/>}/><Route path="/become-insurance-advisor" element={<BecomeAdvisor/>}/><Route path="/about" element={<About quote={quote}/>}/><Route path="/blogs" element={<Blogs quote={quote}/>}/><Route path="/blog/:slug" element={<Post quote={quote}/>}/><Route path="/claims-support" element={<ClaimsSupport quote={quote}/>}/><Route path="/contact" element={<Contact quote={quote}/>}/><Route path="/faqs" element={<FAQs quote={quote}/>}/><Route path="/admin/blogs" element={<AdminBlogs/>}/><Route path="/privacy-policy" element={<Legal title="Privacy Policy"/>}/><Route path="/terms" element={<Legal title="Terms & Conditions"/>}/><Route path="/disclaimer" element={<Legal title="Disclaimer"/>}/><Route path="*" element={<NotFound/>}/></Routes>{show&&<Lead initialType={leadType} source={leadSource} blogSlug={blogSlug} submitLabel={leadSource==='claims-support'?'GET CLAIM GUIDANCE':'GET PERSONALISED GUIDANCE'} close={()=>setShow(false)}/>}</Layout>
 }
 
 createRoot(document.getElementById('root')).render(<BrowserRouter><App/></BrowserRouter>);

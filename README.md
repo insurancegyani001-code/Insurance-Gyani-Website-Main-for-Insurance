@@ -17,21 +17,10 @@ Before using it in production:
 
 The schema seeds six useful starter articles only when the blogs table is empty. Edit or remove those examples after adding the site’s own content.
 
-## Lead management
-
-- `/admin/leads` shows insurance enquiries from `leads`, with status filters, insurance-type filters, name/mobile search, clickable call and WhatsApp actions, and status updates.
-- `/admin/advisor-leads` shows advisor enquiries from `advisor_leads` with status updates.
-- Public visitors can insert leads and advisor enquiries, but cannot read, update or delete them.
-- Admin dashboards require an authenticated Supabase user with `app_metadata.role = 'admin'`.
-
-Apply `supabase/schema.sql` to an existing Supabase project before testing submissions. It adds the `source` and optional `blog_slug` columns to the existing `leads` table, preserves existing lead columns, and creates the required RLS policies. The frontend uses the existing `mobile` column for the requested phone number.
-
-The blog editor uses a small Markdown toolbar rather than adding a large editor dependency. It supports headings, paragraphs, bold, italic, bullet lists, numbered lists, links and image URLs.
-
 The public contact details are:
 
 - Phone: `9891510642`
 - WhatsApp: `919891510642`
-- Email: `hello@insurancegyani.in`
+- Email: `info@insurancegyani.in`
 
 Do not put service-role keys, email provider secrets or other privileged credentials in `VITE_` variables.

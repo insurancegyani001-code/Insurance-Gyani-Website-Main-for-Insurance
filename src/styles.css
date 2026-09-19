@@ -696,3 +696,12 @@ img{max-width:100%;height:auto}
   .journey-cta .btn{width:100%;justify-content:center}
   .nf-inner p{font-size:15px}
 }
+@media (max-width: 768px) {
+  .explain-grid,
+  .whyig-grid,
+  .compare-grid,
+  .journey-grid,
+  .video-section-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

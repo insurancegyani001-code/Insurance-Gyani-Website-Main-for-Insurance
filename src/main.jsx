@@ -1,19 +1,20 @@
-import React,{useEffect,useState}from'react';
-import{createRoot}from'react-dom/client';
-import{BrowserRouter,Routes,Route,Link,useLocation,useParams}from'react-router-dom';
-import{ShieldCheck,HeartPulse,CarFront,Users,UsersRound,Bike,ArrowRight,Phone,MessageCircle,CheckCircle2,Menu,X,BookOpen,Mail,ChevronDown,LockKeyhole,UserRoundPlus,TrendingUp,Clock3,Headphones,Stethoscope,Plane,LifeBuoy,FileCheck,Hospital,ClipboardCheck,CircleHelp,IndianRupee,BedDouble,Baby,Award,Building2,Repeat,SlidersHorizontal,Gauge,PlusCircle,Percent,Wrench,CalendarClock,UserCheck,CircleAlert,Scale,ShieldPlus,Wallet,Loader2}from'lucide-react';
-import{supabase}from'./supabase';
-import'./styles.css';
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Routes, Route, Link, useLocation, useParams } from 'react-router-dom';
+import { ShieldCheck, HeartPulse, CarFront, Users, UsersRound, Bike, ArrowRight, Phone, MessageCircle, CheckCircle2, Menu, X, BookOpen, Mail, ChevronDown, LockKeyhole, UserRoundPlus, TrendingUp, Clock3, Headphones, Stethoscope, Plane, LifeBuoy, FileCheck, Hospital, ClipboardCheck, CircleHelp, IndianRupee, BedDouble, Baby, Award, Building2, Repeat, SlidersHorizontal, Gauge, PlusCircle, Percent, Wrench, CalendarClock, UserCheck, CircleAlert, Scale, ShieldPlus, Wallet, Loader2 } from 'lucide-react';
+import { supabase } from './supabase';
+import ReviewYourPolicy from './ReviewYourPolicy';
+import './styles.css';
 
-const phone='9891510642',wa='919891510642',email='info@insurancegyani.in';
-const YOUTUBE_URL=import.meta.env.VITE_YOUTUBE_URL||'https://youtube.com/@insurancegyani?si=R4Vbv_k_DFikjhw2';
-const INSTAGRAM_URL=import.meta.env.VITE_INSTAGRAM_URL||'https://www.instagram.com/insurancegyani001?igsh=cTZlYml2MTl2cnly';
-const LINKEDIN_URL=import.meta.env.VITE_LINKEDIN_URL||'https://www.linkedin.com/company/insurance-gyani/';
-const socials=[['YouTube','youtube',YOUTUBE_URL],['Instagram','instagram',INSTAGRAM_URL],['LinkedIn','linkedin',LINKEDIN_URL]];
-const SocialIcon={
-  youtube:<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>,
-  instagram:<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>,
-  linkedin:<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.66H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0Z"/></svg>
+const phone = '9891510642', wa = '919891510642', email = 'info@insurancegyani.in';
+const YOUTUBE_URL = import.meta.env.VITE_YOUTUBE_URL || 'https://youtube.com/@insurancegyani?si=R4Vbv_k_DFikjhw2';
+const INSTAGRAM_URL = import.meta.env.VITE_INSTAGRAM_URL || 'https://www.instagram.com/insurancegyani001?igsh=cTZlYml2MTl2cnly';
+const LINKEDIN_URL = import.meta.env.VITE_LINKEDIN_URL || 'https://www.linkedin.com/company/insurance-gyani/';
+const socials = [['YouTube', 'youtube', YOUTUBE_URL], ['Instagram', 'instagram', INSTAGRAM_URL], ['LinkedIn', 'linkedin', LINKEDIN_URL]];
+const SocialIcon = {
+  youtube: <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>,
+  instagram: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>,
+  linkedin: <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.66H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0Z"/></svg>
 };
 function SocialLinks({variant=''}){return <div className={'social-links '+variant}>{socials.map(([label,key,url])=><a key={label} href={url} target="_blank" rel="noreferrer" aria-label={label} title={label} data-testid={'social-'+key}>{SocialIcon[key]}</a>)}</div>}
 function waLink(type){const msg='Hi Insurance Gyani, I am interested in '+type+'. Please help me compare suitable options.';return 'https://wa.me/'+wa+'?text='+encodeURIComponent(msg)}
@@ -46,6 +47,7 @@ function Header({quote}){
     <nav className={open?'nav-menu open':'nav-menu'}>
       <Link className="nav-link" to="/">Home</Link>
       {insuranceNav.slice(0,3).map(([label,path])=><Link key={path} className="nav-link" to={path}>{label.replace(' Insurance','')}</Link>)}
+      <Link className="nav-link" to="/review-your-policy">Review Your Policy</Link>
       <Link className="nav-link" to="/why-insurance-gyani">Why Us</Link>
       <Link className="nav-link" to="/become-insurance-advisor">Become Advisor</Link>
       <Link className="nav-link" to="/blogs">Blogs</Link>
@@ -365,7 +367,7 @@ const termCfg={
   title:'Term Insurance',testid:'term-page',type:'Life Insurance',source:'life-page',path:'/life-insurance',
   meta:'Understand term insurance, sum assured, policy term, riders and claim settlement, and compare before buying with Insurance Gyani.',
   eyebrow:'Term Insurance guidance',
-  heroTitle:'Secure Your Family\u2019s Future.',
+  heroTitle:'Secure Your Family’s Future.',
   heroCopy:'Term insurance provides pure life cover at an affordable premium. Insurance Gyani helps you understand sum assured, tenure and riders, and compare before you choose.',
   heroPoints:['High life cover, affordable premium','Understand riders & eligibility','Compare claim settlement approach'],
   cta:'Compare Term Plans',
@@ -374,9 +376,9 @@ const termCfg={
   explainHeading:'Term insurance, explained simply.',explainSub:'A clear foundation before you compare plans.',
   explain:[
     [ShieldCheck,'What is Term Insurance?','A term plan provides life cover for a chosen period. If the insured passes away during the term, the nominee receives the sum assured, subject to policy terms.'],
-    [Users,'Why is it important?','It replaces your income and protects your family\u2019s goals, loans and lifestyle when they need it most.'],
+    [Users,'Why is it important?','It replaces your income and protects your family’s goals, loans and lifestyle when they need it most.'],
     [IndianRupee,'How much cover & premium?','Choose a sum assured that covers income, liabilities and future goals. Term plans offer large cover at a relatively low premium.'],
-    [SlidersHorizontal,'What should I compare?','Sum assured, policy term, premium, riders, eligibility, exclusions and the insurer\u2019s claim settlement track record.']
+    [SlidersHorizontal,'What should I compare?','Sum assured, policy term, premium, riders, eligibility, exclusions and the insurer’s claim settlement track record.']
   ],
   compareHeading:'Compare Multiple Term Insurance Options',compareSub:'Understand the differences before you choose.',
   compareCta:'Compare Plans',
@@ -384,14 +386,14 @@ const termCfg={
     [ShieldCheck,'Sum Assured','The life cover paid to your nominee. Match it to income, loans and long-term family goals.'],
     [CalendarClock,'Policy Term','How long the cover lasts. Ideally cover your working years and key liabilities.'],
     [IndianRupee,'Premium','Cost of the cover. Compare value and payment options, not just the lowest figure.'],
-    [ClipboardCheck,'Claim Settlement','Understand the insurer\u2019s claim approach and required documentation before choosing.'],
+    [ClipboardCheck,'Claim Settlement','Understand the insurer’s claim approach and required documentation before choosing.'],
     [PlusCircle,'Riders','Optional add-ons like critical illness or accidental cover that strengthen protection.'],
     [UserCheck,'Eligibility','Age, income and health criteria that affect approval and premium.'],
     [CircleAlert,'Exclusions','Important conditions and situations that may not be payable. Always read the wording.']
   ],
   beyondBadge:'BEFORE YOU BUY',beyondTitle:'Look beyond the premium.',beyondText:'Ask what changes the experience. The cheapest term plan is not always the strongest. These are the details worth comparing before you decide.',beyondCta:'Get Personalised Guidance',
   beyond:[
-    ['01',ShieldCheck,'Sum Assured','Choose cover that truly protects your family\u2019s income and future goals.'],
+    ['01',ShieldCheck,'Sum Assured','Choose cover that truly protects your family’s income and future goals.'],
     ['02',CalendarClock,'Policy Term','Align the term with your working years and outstanding liabilities.'],
     ['03',IndianRupee,'Premium','Balance affordability with the right cover and reliable long-term payment.'],
     ['04',ClipboardCheck,'Claim Considerations','Honest disclosures and clear documentation make claims smoother for your nominee.'],
@@ -422,7 +424,7 @@ const motorCfg={
   compareHeading:'Compare Multiple Motor Insurance Options',compareSub:'Understand the differences before you choose.',
   compareCta:'Compare Plans',
   compare:[
-    [Gauge,'IDV','Insured Declared Value \u2014 the current market value of your vehicle and the maximum claim on total loss.'],
+    [Gauge,'IDV','Insured Declared Value — the current market value of your vehicle and the maximum claim on total loss.'],
     [IndianRupee,'Premium','What you pay for the cover. Compare it against the IDV and included benefits.'],
     [Scale,'Third-party Cover','Mandatory cover for injury or damage caused to others. Check the liability protection.'],
     [CarFront,'Own Damage','Covers damage to your own vehicle from accidents, fire or natural events.'],
@@ -433,7 +435,7 @@ const motorCfg={
   ],
   beyondBadge:'BEFORE YOU BUY',beyondTitle:'Look beyond the premium.',beyondText:'Ask what changes the experience. A cheap policy with the wrong IDV or missing add-ons can cost more at claim time. Compare these details first.',beyondCta:'Get Personalised Guidance',
   beyond:[
-    ['01',Gauge,'IDV','Set the right insured value \u2014 too low reduces your claim, too high raises the premium.'],
+    ['01',Gauge,'IDV','Set the right insured value — too low reduces your claim, too high raises the premium.'],
     ['02',IndianRupee,'Premium','Compare value against IDV and the benefits actually included.'],
     ['03',Scale,'Third-party Cover','Ensure adequate legal liability protection, which is mandatory.'],
     ['04',CarFront,'Own Damage','Protect your own vehicle against accidents, fire and natural calamities.'],
@@ -466,13 +468,13 @@ function About({quote}){
 }
 
 function Contact({quote}){
-  return <><section className="contact"><div className="container contact-layout"><div><span className="eyebrow">Contact Insurance Gyani</span><h1>Let’s talk about your insurance requirement.</h1><p className="contact-intro">Need help with health, life, motor or other insurance? Get in touch with our team.</p><div className="contact-items"><a className="contact-item" href={'tel:'+phone}><Phone/><span><strong>Call us</strong>{phone}</span></a><a className="contact-item" href={'mailto:'+email}><Mail/><span><strong>Email</strong>{email}</span></a><a className="contact-item" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle/><span><strong>WhatsApp</strong>Chat with us</span></a></div><div className="contact-social"><span className="social-label">Follow Insurance Gyani</span><SocialLinks/></div><div className="contact-actions"><a className="btn primary" href={'tel:'+phone}><Phone size={16}/> Call Now</a><a className="btn secondary" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp</a><button className="btn secondary" onClick={()=>quote('Health Insurance','contact')}>Get Free Quote <ArrowRight size={16}/></button></div></div><div className="contact-card"><LockKeyhole size={30}/><h3>Your information stays private.</h3><p>We use submitted details only to respond to your insurance requirement. Do not share sensitive financial or identity documents through the form.</p><button className="btn primary full" onClick={()=>quote('Health Insurance','contact')}>Start Your Requirement <ArrowRight size={16}/></button></div></div></section><HelpCTA quote={quote}/></>
+  return <><section className="contact"><div className="container contact-layout"><div><span className="eyebrow">Contact Insurance Gyani</span><h1>Let’s talk about your insurance requirement.</h1><p className="contact-intro">Need help with health, life, motor or other insurance? Get in touch with our team.</p><div className="contact-items"><a className="contact-item" href={'tel:'+phone}><Phone/><span><strong>Call us</strong>{phone}</span></a><a className="contact-item" href={'mailto:'+email}><Mail/><span><strong>Email</strong>{email}</span></a><a className="contact-item" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle/><span><strong>WhatsApp</strong>Chat with us</span></a></div><div className="contact-social"><span className="social-label">Follow Insurance Gyani</span><SocialLinks/></div><div className="contact-actions"><a className="btn primary" href={'tel:'+phone}><Phone size={16}/> Call Now</a><a className="btn secondary" href={'https://wa.me/'+wa} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp</a><button className="btn secondary" onClick={()=>quote('Health Insurance','contact')}>Get Free Quote <ArrowRight size={16}/></button></div></div><div className="contact-card"><LockKeyhole size={30}/><h3>Your information stays private.</h3><p>We use submitted details only to respond to your insurance requirement. Do not share sensitive financial or identity documents through the public lead form.</p><button className="btn primary full" onClick={()=>quote('Health Insurance','contact')}>Start Your Requirement <ArrowRight size={16}/></button></div></div></section><HelpCTA quote={quote}/></>
 }
 
 function Blogs({quote}){
   const[posts,setPosts]=useState([]),[loading,setLoading]=useState(true);
   useEffect(()=>{let active=true;(async()=>{if(!supabase){setLoading(false);return}const{data}=await supabase.from('blogs').select('*').eq('published',true).order('published_at',{ascending:false});if(active)setPosts(data||[]);setLoading(false)})();return()=>{active=false}},[]);
-  return <><section className="section"><div className="container"><span className="eyebrow">Insurance Gyani Knowledge Center</span><h1>Insurance, explained clearly.</h1><p className="lead">Simple explanations and practical education for health, life, motor and everyday protection questions.</p>{loading?<div className="empty-state">Loading published articles...</div>:posts.length?<div className="blogs-grid">{posts.map(post=><article className="blog-card" key={post.slug}><div className="blog-art">{post.cover_image?<img src={post.cover_image} alt="" />:<BookOpen size={30}/>}</div><div className="blog-content"><span className="category">{post.category||'Insurance Tips'}</span><h3>{post.title}</h3><p>{post.excerpt}</p><Link className="text-link" to={'/blog/'+post.slug}>Read article <ArrowRight size={15}/></Link></div></article>)}</div>:<div className="empty-state">New articles are on the way. In the meantime, call us for help understanding your insurance requirement.</div>}</div></section><CTA quote={quote} heading="Still confused about your insurance?" text="Get personalised guidance based on your requirement." button="GET PERSONALISED GUIDANCE" source="blog"/></>
+  return <><section className="section"><div className="container"><span className="eyebrow">Insurance Gyani Knowledge Center</span><h1>Insurance, explained clearly.</h1><p className="lead">Simple explanations and practical education for health, life, motor and everyday protection questions.</p><p className="lead" style={{ marginTop: '12px' }}><Link to="/review-your-policy" className="text-link">Want to understand your current policy better? Review your policy with us <ArrowRight size={15}/></Link></p>{loading?<div className="empty-state">Loading published articles...</div>:posts.length?<div className="blogs-grid">{posts.map(post=><article className="blog-card" key={post.slug}><div className="blog-art">{post.cover_image?<img src={post.cover_image} alt="" />:<BookOpen size={30}/>}</div><div className="blog-content"><span className="category">{post.category||'Insurance Tips'}</span><h3>{post.title}</h3><p>{post.excerpt}</p><Link className="text-link" to={'/blog/'+post.slug}>Read article <ArrowRight size={15}/></Link></div></article>)}</div>:<div className="empty-state">New articles are on the way. In the meantime, call us for help understanding your insurance requirement.</div>}</div></section><CTA quote={quote} heading="Still confused about your insurance?" text="Get personalised guidance based on your requirement." button="GET PERSONALISED GUIDANCE" source="blog"/></>
 }
 
 function Post({quote}){
@@ -511,7 +513,7 @@ function NotFound(){
 function App(){
   const[leadType,setLeadType]=useState('Health Insurance'),[leadSource,setLeadSource]=useState('homepage'),[blogSlug,setBlogSlug]=useState(''),[show,setShow]=useState(false);
   const quote=(type,source='homepage',slug='')=>{setLeadType(type||'Health Insurance');setLeadSource(source);setBlogSlug(slug);setShow(true)};
-  return <Layout quote={quote}><Routes><Route path="/" element={<Home quote={quote}/>}/><Route path="/health-insurance" element={<InsurancePage cfg={healthCfg} quote={quote}/>}/><Route path="/life-insurance" element={<InsurancePage cfg={termCfg} quote={quote}/>}/><Route path="/motor-insurance" element={<InsurancePage cfg={motorCfg} quote={quote}/>}/><Route path="/other-insurance" element={<Product type="Other" quote={quote}/>}/><Route path="/why-insurance-gyani" element={<WhyUs quote={quote}/>}/><Route path="/become-insurance-advisor" element={<BecomeAdvisor/>}/><Route path="/about" element={<About quote={quote}/>}/><Route path="/blogs" element={<Blogs quote={quote}/>}/><Route path="/blog/:slug" element={<Post quote={quote}/>}/><Route path="/claims-support" element={<ClaimsSupport quote={quote}/>}/><Route path="/contact" element={<Contact quote={quote}/>}/><Route path="/faqs" element={<FAQs quote={quote}/>}/><Route path="/admin/blogs" element={<AdminBlogs/>}/><Route path="/privacy-policy" element={<Legal title="Privacy Policy"/>}/><Route path="/terms" element={<Legal title="Terms & Conditions"/>}/><Route path="/disclaimer" element={<Legal title="Disclaimer"/>}/><Route path="*" element={<NotFound/>}/></Routes>{show&&<Lead initialType={leadType} source={leadSource} blogSlug={blogSlug} submitLabel={leadSource==='claims-support'?'GET CLAIM GUIDANCE':'GET PERSONALISED GUIDANCE'} close={()=>setShow(false)}/>}</Layout>
+  return <Layout quote={quote}><Routes><Route path="/" element={<Home quote={quote}/>}/><Route path="/health-insurance" element={<InsurancePage cfg={healthCfg} quote={quote}/>}/><Route path="/life-insurance" element={<InsurancePage cfg={termCfg} quote={quote}/>}/><Route path="/motor-insurance" element={<InsurancePage cfg={motorCfg} quote={quote}/>}/><Route path="/other-insurance" element={<Product type="Other" quote={quote}/>}/><Route path="/review-your-policy" element={<ReviewYourPolicy/>}/><Route path="/why-insurance-gyani" element={<WhyUs quote={quote}/>}/><Route path="/become-insurance-advisor" element={<BecomeAdvisor/>}/><Route path="/about" element={<About quote={quote}/>}/><Route path="/blogs" element={<Blogs quote={quote}/>}/><Route path="/blog/:slug" element={<Post quote={quote}/>}/><Route path="/claims-support" element={<ClaimsSupport quote={quote}/>}/><Route path="/contact" element={<Contact quote={quote}/>}/><Route path="/faqs" element={<FAQs quote={quote}/>}/><Route path="/admin/blogs" element={<AdminBlogs/>}/><Route path="/privacy-policy" element={<Legal title="Privacy Policy"/>}/><Route path="/terms" element={<Legal title="Terms & Conditions"/>}/><Route path="/disclaimer" element={<Legal title="Disclaimer"/>}/><Route path="*" element={<NotFound/>}/></Routes>{show&&<Lead initialType={leadType} source={leadSource} blogSlug={blogSlug} submitLabel={leadSource==='claims-support'?'GET CLAIM GUIDANCE':'GET PERSONALISED GUIDANCE'} close={()=>setShow(false)}/>}</Layout>
 }
 
 createRoot(document.getElementById('root')).render(<BrowserRouter><App/></BrowserRouter>);
